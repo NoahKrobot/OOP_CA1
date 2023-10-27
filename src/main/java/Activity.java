@@ -6,6 +6,8 @@ public class Activity {
     private double avg_heart_rate;
     private double energy_spent;
     private double calories_burnt;
+    public static enum INTENSITY{VERY_LIGHT, LIGHT, MODERATE, VIGOROUS, VERY_VIGOROUS}
+    private INTENSITY Intensity;
 
     public Activity(String type_of_activity, double duration, String date, double avg_heart_rate, double energy_spent, double calories_burnt) {
         this.type_of_activity = type_of_activity;
