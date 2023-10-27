@@ -63,6 +63,61 @@ public class Activity {
 
 
 
+    public double calculateCalories(double intensityValue, double durationInMinutes){
+        double caloriesCalculated = intensityValue * durationInMinutes;
+        return caloriesCalculated;
+    }
+    public double getCaloriesBurnt(){
+        //calories burnt = Intensity Value * duration in minutes
+          double finalCaloriesBurnt = 0;
+
+          //swimming
+          if(Objects.equals(type_of_activity, "Swimming")){
+              if(Objects.equals(Intensity,INTENSITY.VERY_LIGHT)){
+                  finalCaloriesBurnt = calculateCalories(5, duration_min);
+              }else if(Objects.equals(Intensity,INTENSITY.LIGHT)){
+                  finalCaloriesBurnt = calculateCalories(6.3 , duration_min);
+              }else if(Objects.equals(Intensity,INTENSITY.MODERATE)){
+                  finalCaloriesBurnt = calculateCalories(7.6 , duration_min);
+              }else if(Objects.equals(Intensity,INTENSITY.VIGOROUS)){
+                  finalCaloriesBurnt = calculateCalories(8.9 , duration_min);
+              }else if(Objects.equals(Intensity,INTENSITY.VERY_VIGOROUS)){
+                  finalCaloriesBurnt = calculateCalories(10.2 , duration_min);
+              }
+          }else if(Objects.equals(type_of_activity, "Running")){
+              if(Objects.equals(Intensity,INTENSITY.VERY_LIGHT)){
+                  finalCaloriesBurnt = calculateCalories(4.1, duration_min);
+              }else if(Objects.equals(Intensity,INTENSITY.LIGHT)){
+                  finalCaloriesBurnt = calculateCalories(7.2 , duration_min);
+              }else if(Objects.equals(Intensity,INTENSITY.MODERATE)){
+                  finalCaloriesBurnt = calculateCalories(10 , duration_min);
+              }else if(Objects.equals(Intensity,INTENSITY.VIGOROUS)){
+                  finalCaloriesBurnt = calculateCalories(15.4 , duration_min);
+              }else if(Objects.equals(Intensity,INTENSITY.VERY_VIGOROUS)){
+                  finalCaloriesBurnt = calculateCalories(20.8 , duration_min);
+              }
+          }else if(Objects.equals(type_of_activity, "Cycling")){
+              if(Objects.equals(Intensity,INTENSITY.VERY_LIGHT)){
+                  finalCaloriesBurnt = calculateCalories(2, duration_min);
+              }else if(Objects.equals(Intensity,INTENSITY.LIGHT)){
+                  finalCaloriesBurnt = calculateCalories(5 , duration_min);
+              }else if(Objects.equals(Intensity,INTENSITY.MODERATE)){
+                  finalCaloriesBurnt = calculateCalories(7 , duration_min);
+              }else if(Objects.equals(Intensity,INTENSITY.VIGOROUS)){
+                  finalCaloriesBurnt = calculateCalories(13 , duration_min);
+              }else if(Objects.equals(Intensity,INTENSITY.VERY_VIGOROUS)){
+                  finalCaloriesBurnt = calculateCalories(15 , duration_min);
+              }
+          }
+
+
+
+          return 1;
+      }
+
+
+
+
 
 
     public String getType_of_activity() {return type_of_activity;}
