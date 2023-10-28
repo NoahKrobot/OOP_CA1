@@ -2,6 +2,7 @@ public class MainApp {
     public static void main(String[] args) {
 
         System.out.println("Hello world!");
+        //shahzad test
 
         Activity act1 = new Activity("Swimming", 60,"13",1,13);
         act1.setIntensity();
