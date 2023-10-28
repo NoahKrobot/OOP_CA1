@@ -1,7 +1,7 @@
 import java.util.Objects;
 
 public class Activity {
-
+    //test Noah
     private String type_of_activity;
     private double duration_min;
     private String date;
@@ -19,6 +19,8 @@ public class Activity {
         setIntensity();
     }
 
+
+    //INTENSITY ********************************************************************************************************
     public void setIntensity()
     {
         double kmPerHour= (duration_min/60)*distance_km;
@@ -62,6 +64,7 @@ public class Activity {
     }
 
 
+    //CALORIES BURNT ***************************************************************************************************
 
     public double calculateCalories(double intensityValue, double durationInMinutes){
         double caloriesCalculated = intensityValue * durationInMinutes;
