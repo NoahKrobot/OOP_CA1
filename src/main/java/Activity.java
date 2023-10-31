@@ -7,6 +7,9 @@ public class Activity {
     private String date;
     private double distance_km;
     private double avg_heart_rate;
+
+
+
     public static enum INTENSITY{VERY_LIGHT, LIGHT, MODERATE, VIGOROUS, VERY_VIGOROUS}
     private INTENSITY Intensity;
 
