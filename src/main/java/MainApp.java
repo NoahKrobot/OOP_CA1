@@ -12,7 +12,7 @@ public class MainApp {
         ArrayList<Activity> listOfActivities = new ArrayList<Activity>();
 
         Activity act1 = new Activity("Cycling", 60,"13",1,13);
-        act1.setIntensity();
+
         System.out.println(act1.getIntensity());
         act1.getCaloriesBurnt();
 
@@ -20,12 +20,15 @@ public class MainApp {
         Activity act3 = new Activity("Swimming", 60,"13",2,13);
         Activity act4 = new Activity("Running", 60,"13",1,13);
 
+        System.out.println( act4.getIntensity());
         listOfActivities.add(act1);
         listOfActivities.add(act2);
         listOfActivities.add(act3);
         listOfActivities.add(act4);
 
         averageDistance(listOfActivities);
+
+        averageCalories(listOfActivities);
     }
 
 
@@ -68,6 +71,20 @@ public class MainApp {
 
         cyclingTotal= cyclingDistance/(double)cyclingCounter;
         System.out.println("Average distance in cycling activities is: "+ cyclingTotal +" km");
+    }
+
+    public static void averageCalories(ArrayList<Activity> listOfActivities){
+
+        double caloriesGet =0;
+        int caloriesCounter=0;
+        double caloriesAvgTotal=0;
+
+        for(Activity act: listOfActivities){
+            caloriesGet = caloriesGet+ act.getCaloriesBurnt();
+            caloriesCounter++;
+        }
+        caloriesAvgTotal= caloriesGet+(double) caloriesCounter;
+        System.out.println("Average amount of burnt calories is "+ caloriesAvgTotal +".");
 
     }
 
