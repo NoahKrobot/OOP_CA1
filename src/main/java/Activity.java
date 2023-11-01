@@ -13,7 +13,7 @@ public class Activity {
     public static enum INTENSITY{VERY_LIGHT, LIGHT, MODERATE, VIGOROUS, VERY_VIGOROUS}
     private INTENSITY Intensity;
 
-    public Activity(String type_of_activity, double duration_min, String date, double distance_km, double avg_heart_rate) {
+    public Activity(String type_of_activity, String date, double duration_min, double distance_km, double avg_heart_rate) {
         this.type_of_activity = type_of_activity;
         this.duration_min = duration_min;
         this.date = date;
