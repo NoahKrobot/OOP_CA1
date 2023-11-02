@@ -14,11 +14,12 @@ public class MainApp {
 
         CSV_reader.fileReader(fileSource, listOfActivities);
 
-
-
         for(Activity activity : listOfActivities) {
             System.out.println(activity.toString());
         }
+
+
+        ActivityTracker.naturalOrder(listOfActivities);
 
 
     }

@@ -4,7 +4,7 @@ public class Activity implements Comparable<Activity>{
     //test Noah
     private String type_of_activity;
     private double duration_min;
-    private String date; //DD-MM-YYYY
+    private String date; //MM/DD/YYYY
     private double distance_km;
     private double avg_heart_rate;
 

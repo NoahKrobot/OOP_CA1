@@ -1,26 +1,18 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class ActivityTracker{
     public static void naturalOrder(ArrayList<Activity> listOfActivities) {
 
-//        date is DD-MM-YYYY
-        listOfActivities.add(new Activity("Running", "10-10-2023", 30, 5, 120));
-        listOfActivities.add(new Activity("Swimming", "12-10-2023", 45, 2, 110));
+//        date is MM/DD/YYYY
 
         Collections.sort(listOfActivities);
-
-
-
         String correctActivity= "";
         correctActivity= validateType();
 
         String correctDate = "";
+        correctDate = validDate();
 
-
-        Activity searchActivity = new Activity(correctActivity, "2023-10-10", 0, 0, 0); // Only date is relevant for comparison
+        Activity searchActivity = new Activity(correctActivity, correctDate, 0, 0, 0); // Only date is relevant for comparison
 
 
 
@@ -40,16 +32,19 @@ public class ActivityTracker{
         boolean runWhile = true;
 
         while(runWhile){
+            correctType ="";
 
+            System.out.println("enter an activity: ");
             correctType = validKey.nextLine();
+            System.out.println(correctType);
 
-            if(correctType.compareTo("Cycling") !=0  ||
-               correctType.compareTo("Running") !=0  ||
-               correctType.compareTo("Swimming") !=0
-            ){
-                System.out.println("Invalid type of activity");
-            }else{
+            if(Objects.equals(correctType, "Swimming")||
+               Objects.equals(correctType, "Running")||
+               Objects.equals(correctType, "Cycling"))
+            {
                 runWhile=false;
+            }else{
+                System.out.println("Invalid type of activity");
             }
         }
         return correctType;
@@ -57,9 +52,42 @@ public class ActivityTracker{
 
 
     public static String validDate (){
+        Scanner keyValid = new Scanner(System.in);
+        // MM/DD/YYYY
         String fullCorrectDate ="";
+        boolean runWhile = true;
+        boolean testBoolean = true;
 
+        while(runWhile){
+            System.out.println("enter a date: ");
+            fullCorrectDate = keyValid.nextLine();
 
+//            runWhile= checkDateType(fullCorrectDate);
+            testBoolean = checkDateType(fullCorrectDate);
+            if(!testBoolean){
+                System.out.println("nice");
+            }
+
+        }
         return fullCorrectDate;
+    }
+
+    public static boolean checkDateType(String date){
+        String slash = "/";
+        boolean checkIfWrong = true;
+        int firstSlash = date.indexOf('/');
+        int secondSlash = date.lastIndexOf('/');
+
+    // MM/DD/YYYY
+
+        while(checkIfWrong){
+            if(date.length()==10){  //chech that it's 10 characters
+                if(firstSlash==2 && secondSlash==5){  //check for two slash characters
+                    checkIfWrong = false;
+                }
+            }
+        }
+
+        return checkIfWrong;
     }
 }
