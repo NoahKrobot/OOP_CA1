@@ -1,10 +1,10 @@
 import java.util.Objects;
 
-public class Activity {
+public class Activity implements Comparable<Activity>{
     //test Noah
     private String type_of_activity;
     private double duration_min;
-    private String date;
+    private String date; //DD-MM-YYYY
     private double distance_km;
     private double avg_heart_rate;
 
@@ -148,7 +148,10 @@ public class Activity {
 
     public void setAvg_heart_rate(double avg_heart_rate) {this.avg_heart_rate = avg_heart_rate;}
 
-
+    @Override
+    public int compareTo(Activity other) {
+        return this.date.compareTo(other.date);
+    }
 
     @Override
     public String toString() {
