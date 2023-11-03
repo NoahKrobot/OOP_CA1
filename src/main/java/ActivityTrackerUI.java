@@ -1,39 +1,107 @@
-//import javafx.application.Application;
-//import javafx.scene.Scene;
-//import javafx.scene.control.Button;
-//import javafx.scene.layout.VBox;
-//import javafx.stage.Stage;
-//
-//public class ActivityTrackerUI extends Application {
-//
-//    public static void main(String[] args) {
-//
-//        start(args);
-//    }
-//
-//    @Override
-//    public void start(Stage primaryStage) {
-//        primaryStage.setTitle("Activity Tracker");
-//
-//        // Create a button to add a new activity
-//        Button addButton = new Button("Add Activity");
-//
-//        // Add an action when the button is clicked
-//        addButton.setOnAction(e -> {
-//            // You can implement code here to add a new activity
-//            // For simplicity, we'll just print a message for now
-//            System.out.println("New activity added!");
-//        });
-//
-//        // Create a layout to organize the button
-//        VBox layout = new VBox(10); // 10 pixels spacing
-//        layout.getChildren().add(addButton);
-//
-//        // Create a scene and set it in the stage
-//        Scene scene = new Scene(layout, 300, 200); // Width and height of the window
-//        primaryStage.setScene(scene);
-//
-//        // Show the user interface
-//        primaryStage.show();
-//    }
-//}
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+public class ActivityTrackerUI {
+    private JFrame frame;
+    private ArrayList<Activity> listOfActivities;
+
+    public ActivityTrackerUI(ArrayList<Activity> listOfActivities) {
+        this.listOfActivities = listOfActivities;
+        frame = new JFrame("Activity Tracker");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(800, 400);
+        createUIComponents();
+        frame.setVisible(true);
+    }
+
+    private void createUIComponents() {
+        JPanel panel = new JPanel(new BorderLayout());
+
+        JTextArea textArea = new JTextArea(20, 50);
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+
+        JButton displayDataButton = new JButton("Display Activity Data");
+        displayDataButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                displayActivityData(textArea);
+            }
+        });
+
+        JButton avgDistanceButton = new JButton("Calculate Average Distance");
+        avgDistanceButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                double averageDistance = calculateAverageDistance();
+                textArea.append("\nAverage distance in activities is: " + averageDistance + " km");
+            }
+        });
+
+        JButton avgCaloriesButton = new JButton("Calculate Average Calories Burnt");
+        avgCaloriesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                double averageCalories = calculateAverageCalories();
+                textArea.append("\nAverage amount of burnt calories is " + averageCalories + " cal");
+            }
+        });
+
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        buttonPanel.add(displayDataButton);
+        buttonPanel.add(avgDistanceButton);
+        buttonPanel.add(avgCaloriesButton);
+
+        panel.add(scrollPane, BorderLayout.CENTER);
+        panel.add(buttonPanel, BorderLayout.SOUTH);
+
+        frame.add(panel);
+    }
+
+    private void displayActivityData(JTextArea textArea) {
+        textArea.setText(""); // Clear the text area
+        for (Activity activity : listOfActivities) {
+            textArea.append(activity.toString() + "\n");
+        }
+    }
+
+    private double calculateAverageDistance() {
+        double totalDistance = 0;
+        int activityCount = listOfActivities.size();
+
+        for (Activity activity : listOfActivities) {
+            totalDistance += activity.getDistance_km();
+        }
+
+        return activityCount > 0 ? totalDistance / activityCount : 0;
+    }
+
+    private double calculateAverageCalories() {
+        double totalCalories = 0;
+        int activityCount = listOfActivities.size();
+
+        for (Activity activity : listOfActivities) {
+            totalCalories += activity.getCaloriesBurnt();
+        }
+
+        return activityCount > 0 ? totalCalories / activityCount : 0;
+    }
+
+    public static void main(String[] args) {
+        // Example data for testing
+        ArrayList<Activity> activities = new ArrayList<>();
+        activities.add(new Activity("Running", "2023-11-01", 60, 5.3, 140));
+        activities.add(new Activity("Swimming", "2023-11-02", 45, 2.5, 125));
+        activities.add(new Activity("Cycling", "2023-11-03", 90, 10.1, 130));
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new ActivityTrackerUI(activities);
+            }
+        });
+    }
+}
