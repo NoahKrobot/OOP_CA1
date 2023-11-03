@@ -6,19 +6,22 @@ public class ActivityTracker{
 //        date is MM/DD/YYYY
 
         Collections.sort(listOfActivities);
+
+
+        System.out.println("Search an activity based on a date: ");
         String correctActivity= "";
         correctActivity= validateType();
 
         String correctDate = "";
         correctDate = validDate();
 
-        Activity searchActivity = new Activity(correctActivity, correctDate, 0, 0, 0); // Only date is relevant for comparison
+        // Only date is relevant for comparison
+        Activity searchActivity = new Activity(correctActivity, correctDate, 0, 0, 0);
 
 
-
-        int index = Collections.binarySearch(listOfActivities, searchActivity);
-        if (index >= 0) {
-            System.out.println("Activity found: " + listOfActivities.get(index));
+        int elementIndex = Collections.binarySearch(listOfActivities, searchActivity);
+        if (elementIndex >= 0) {
+            System.out.println("Activity found: " + listOfActivities.get(elementIndex));
         } else {
             System.out.println("Activity not found");
         }
@@ -66,6 +69,7 @@ public class ActivityTracker{
             testBoolean = checkDateType(fullCorrectDate);
             if(!testBoolean){
                 System.out.println("nice");
+                runWhile=false;
             }
 
         }
@@ -87,7 +91,6 @@ public class ActivityTracker{
                 }
             }
         }
-
         return checkIfWrong;
     }
 }
