@@ -70,7 +70,8 @@ public class Activity implements Comparable<Activity>{
     //CALORIES BURNT ***************************************************************************************************
 
     public double calculateCalories(double intensityValue, double durationInMinutes){
-        double caloriesCalculated = intensityValue * durationInMinutes;
+        double caloriesCalculated =0;
+        caloriesCalculated = intensityValue * durationInMinutes;
         return caloriesCalculated;
     }
     public double getCaloriesBurnt(){
@@ -115,10 +116,7 @@ public class Activity implements Comparable<Activity>{
                   finalCaloriesBurnt = calculateCalories(15 , duration_min);
               }
           }
-
-
-
-          return 1;
+          return finalCaloriesBurnt;
       }
 
 

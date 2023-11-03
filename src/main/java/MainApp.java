@@ -1,8 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.AccessFlag;
-import java.lang.reflect.Array;
 import java.util.*;
 import javax.swing.*;
 import java.awt.*;
@@ -14,14 +10,10 @@ public class MainApp {
     public static void main(String[] args) throws IOException {
 
 
-        ArrayList<Activity> listOfActivities = new ArrayList<>();
-        String fileSource = "src/main/java/activity_data_10.csv";
+        ArrayList<Activity> listOfActivities = new ArrayList<Activity>();
+        String fileSource = "src/main/java/CSV/activity_data_10.csv";
 
         CSV_reader.fileReader(fileSource, listOfActivities);
-
-        for(Activity activity : listOfActivities) {
-            System.out.println(activity.toString());
-        }
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override

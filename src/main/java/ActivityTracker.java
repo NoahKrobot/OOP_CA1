@@ -4,15 +4,18 @@ public class ActivityTracker{
     public static void naturalOrder(ArrayList<Activity> listOfActivities) {
 
 //        date is MM/DD/YYYY
+        String correctActivity= "";
+        String correctDate = "";
+
 
         Collections.sort(listOfActivities);
 
+        System.out.println(" *** Search an activity based on a date *** ");
 
-        System.out.println("Search an activity based on a date: ");
-        String correctActivity= "";
+        //activity
         correctActivity= validateType();
 
-        String correctDate = "";
+        //date
         correctDate = validDate();
 
         // Only date is relevant for comparison
