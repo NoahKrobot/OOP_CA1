@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.lang.reflect.AccessFlag;
 import java.lang.reflect.Array;
 import java.util.*;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 
 public class MainApp {
     public static void main(String[] args) throws IOException {
@@ -18,10 +23,12 @@ public class MainApp {
             System.out.println(activity.toString());
         }
 
-
-        ActivityTracker.naturalOrder(listOfActivities);
-
-
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new ActivityTrackerUI(listOfActivities);
+            }
+        });
     }
 
 
