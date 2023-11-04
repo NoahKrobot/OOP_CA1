@@ -1,7 +1,6 @@
 import java.util.Objects;
 
 public class Activity implements Comparable<Activity>{
-    //test Noah
     private String type_of_activity;
     private double duration_min;
     private String date; //MM/DD/YYYY
