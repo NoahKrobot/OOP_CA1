@@ -15,6 +15,8 @@ public class MainApp {
 
         CSV_reader.fileReader(fileSource, listOfActivities);
 
+        CompareActivities.naturalOrder(listOfActivities);
+
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {

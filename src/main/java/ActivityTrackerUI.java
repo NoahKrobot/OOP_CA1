@@ -91,11 +91,7 @@ public class ActivityTrackerUI {
     }
 
     public static void main(String[] args) {
-        // Example data for testing
         ArrayList<Activity> activities = new ArrayList<>();
-        activities.add(new Activity("Running", "2023-11-01", 60, 5.3, 140));
-        activities.add(new Activity("Swimming", "2023-11-02", 45, 2.5, 125));
-        activities.add(new Activity("Cycling", "2023-11-03", 90, 10.1, 130));
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
