@@ -11,7 +11,7 @@ import java.util.Scanner;
 
  */
 
-public class CompareActivities extends CompareActions{
+public class CompareActivities{
 
     public static void naturalOrder(ArrayList<Activity> listOfActivities) {
 
@@ -28,6 +28,31 @@ public class CompareActivities extends CompareActions{
         Activity comparingAct2 = checkIfActivityExists(listOfActivities);
 
 
+        Collections.sort(listOfActivities, new CompareTypes());
+        for(Activity a: listOfActivities){
+            System.out.println(a.toString());
+        }
+
+        // Sort by duration using ActivityDurationComparator
+        Collections.sort(listOfActivities, new CompareDates());
+        for(Activity a: listOfActivities){
+            System.out.println(a.toString());
+        }
+
+        Collections.sort(listOfActivities, new CompareDistances());
+        for(Activity a: listOfActivities){
+            System.out.println(a.toString());
+        }
+
+        Collections.sort(listOfActivities, new CompareDuration());
+        for(Activity a: listOfActivities){
+            System.out.println(a.toString());
+        }
+
+        Collections.sort(listOfActivities, new CompareHeartBeats());
+        for(Activity a: listOfActivities){
+            System.out.println(a.toString());
+        }
 
     }
 
