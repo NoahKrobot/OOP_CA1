@@ -3,7 +3,7 @@
 // swimming description reference:
 
 
-public class AnonymousActivity {
+public class ExampleTypeActivity {
 
     public static void getRunningDescription() {
       Activity runningExample = new Activity("Running Activity", "01/01/2011", 12, 1.5, 90){
