@@ -5,8 +5,11 @@ public class ExampleValidDate {
         Activity runningExample = new Activity("Activity with the date", "", 12, 1.5, 90){
             @Override
             public void setDate(String date) {
+                //1. comment:  display this messages to users
                 System.out.println("To set a proper date, we have to input it in the 'MM/DD/YYYY' form.");
                 System.out.println("Try it yourself.");
+
+                //2. comment:  let users input the date with a textbox
                 System.out.println(validDate());
             }
         };
