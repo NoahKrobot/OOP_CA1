@@ -14,20 +14,56 @@ public class ActivityTrackerUI {
         this.listOfActivities = listOfActivities;
         frame = new JFrame("Activity Tracker");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new GridLayout(0, 1)); // Vertical GridLayout
+        frame.setLayout(new BorderLayout()); // Use BorderLayout for the main frame
         createUIComponents();
-        frame.pack(); // Adjust the frame size to fit the components
+        frame.pack();
         frame.setVisible(true);
+    }
+    private JButton createStyledButton(String text, String bgColorRGB) {
+        JButton button = new JButton(text);
+        button.setFont(new Font("Arial", Font.BOLD, 16));
+        String[] rgb = bgColorRGB.split(",");
+        int r = Integer.parseInt(rgb[0]);
+        int g = Integer.parseInt(rgb[1]);
+        int b = Integer.parseInt(rgb[2]);
+
+
+        button.setBackground(Color.ORANGE);
+
+
+        button.setForeground(Color.BLACK);
+
+
+        button.setPreferredSize(new Dimension(250, 60));
+
+        return button;
     }
 
     private void createUIComponents() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(0, 1)); // Vertical GridLayout
+        JPanel mainPanel = new JPanel(new BorderLayout());
+
+
+        JLabel headerLabel = new JLabel("Activity Tracker");
+        headerLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        headerLabel.setHorizontalAlignment(JLabel.CENTER);
+        headerLabel.setForeground(Color.WHITE); // Change the text color to white
+        headerLabel.setOpaque(true);
+        headerLabel.setBackground(Color.BLACK); // Change the background color to black
+        mainPanel.add(headerLabel, BorderLayout.NORTH);
+
+        JPanel centerPanel = new JPanel(new BorderLayout());
+        centerPanel.setBackground(Color.BLACK); // Change the background color of the center panel to black
 
         JTextArea textArea = new JTextArea(20, 50);
         textArea.setEditable(false);
         textArea.setFont(new Font("Arial", Font.PLAIN, 16));
+        textArea.setBackground(Color.BLACK); // Change the background color of the text area to black
+        textArea.setForeground(Color.WHITE); // Change the text color to white
         JScrollPane scrollPane = new JScrollPane(textArea);
+        centerPanel.add(scrollPane, BorderLayout.CENTER);
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
 
         JComboBox<String> activityTypeComboBox = new JComboBox<>();
         for (Activity activity : listOfActivities) {
@@ -37,11 +73,35 @@ public class ActivityTrackerUI {
             }
         }
 
-        JButton avgDistanceButton = new JButton("Calculate Average Distance");
-        avgDistanceButton.setFont(new Font("Arial", Font.BOLD, 16));
-        avgDistanceButton.setBackground(new Color(50, 150, 50));
+        // Create styled buttons
+        JButton avgDistanceButton = createStyledButton("Calculate Average Distance", "50,150,50");
         avgDistanceButton.setForeground(Color.BLACK);
-        avgDistanceButton.setPreferredSize(new Dimension(250, 60));
+        avgDistanceButton.setBackground(Color.ORANGE);
+
+        JButton avgCaloriesButton = createStyledButton("Calculate Average Calories Burnt", "50,150,50");
+        avgCaloriesButton.setForeground(Color.BLACK);
+        avgCaloriesButton.setBackground(Color.ORANGE);
+
+        JButton viewActivityButton = createStyledButton("View Activity Details", "255,0,0");
+        viewActivityButton.setForeground(Color.BLACK);
+        viewActivityButton.setBackground(Color.ORANGE);
+
+        JButton getActivityDetailsButton = createStyledButton("Get Intensity and Calories Burnt", "255,0,0");
+        getActivityDetailsButton.setForeground(Color.BLACK);
+        getActivityDetailsButton.setBackground(Color.ORANGE); // Change the button's background color to orange
+
+        buttonPanel.add(activityTypeComboBox);
+        buttonPanel.add(avgDistanceButton);
+        buttonPanel.add(avgCaloriesButton);
+        buttonPanel.add(viewActivityButton);
+        buttonPanel.add(getActivityDetailsButton);
+
+        centerPanel.add(buttonPanel, BorderLayout.EAST);
+
+        mainPanel.add(centerPanel, BorderLayout.CENTER);
+
+        frame.add(mainPanel);
+
         avgDistanceButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -53,11 +113,8 @@ public class ActivityTrackerUI {
             }
         });
 
-        JButton avgCaloriesButton = new JButton("Calculate Average Calories Burnt");
-        avgCaloriesButton.setFont(new Font("Arial", Font.BOLD, 16));
-        avgCaloriesButton.setBackground(new Color(50, 150, 50));
-        avgCaloriesButton.setForeground(Color.BLACK);
-        avgCaloriesButton.setPreferredSize(new Dimension(250, 60));
+
+
         avgCaloriesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -66,11 +123,8 @@ public class ActivityTrackerUI {
             }
         });
 
-        JButton viewActivityButton = new JButton("View Activity Details");
-        viewActivityButton.setFont(new Font("Arial", Font.BOLD, 16));
-        viewActivityButton.setBackground(Color.RED);;
-        viewActivityButton.setForeground(Color.BLACK);
-        viewActivityButton.setPreferredSize(new Dimension(250, 60));
+
+
         viewActivityButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -94,15 +148,8 @@ public class ActivityTrackerUI {
                 }
             }
         });
-        JButton getActivityDetailsButton = new JButton("Get Intensity and Calories Burnt");
-        getActivityDetailsButton.setFont(new Font("Arial", Font.BOLD, 16));
-        getActivityDetailsButton.setBackground(Color.RED);
-        getActivityDetailsButton.setForeground(Color.BLACK);
-        getActivityDetailsButton.setPreferredSize(new Dimension(250, 60));
 
-        JTextField activityDetailsField = new JTextField(25);
-        activityDetailsField.setEditable(false);
-        activityDetailsField.setFont(new Font("Arial", Font.PLAIN, 16));
+
 
         getActivityDetailsButton.addActionListener(new ActionListener() {
             @Override
@@ -113,28 +160,14 @@ public class ActivityTrackerUI {
                     Activity selectedActivity = findActivityByDate(selectedDate, selectedActivityType);
                     if (selectedActivity != null) {
                         String details = "Intensity: " + selectedActivity.getIntensity() + ", Calories Burnt: " + selectedActivity.getCaloriesBurnt() + " cal";
-                        activityDetailsField.setText(details);
+                        textArea.append("\n" + details);
                     } else {
-                        activityDetailsField.setText("Activity not found for the given date and type.");
+                        textArea.append("\nActivity not found for the given date and type.");
                     }
                 }
             }
         });
-
-
-        JPanel buttonPanel = new JPanel(new FlowLayout());
-        buttonPanel.add(activityTypeComboBox);
-        buttonPanel.add(avgDistanceButton);
-        buttonPanel.add(avgCaloriesButton);
-        buttonPanel.add(viewActivityButton);
-        buttonPanel.add(activityDetailsField);
-
-        panel.add(scrollPane, BorderLayout.CENTER);
-        panel.add(buttonPanel, BorderLayout.SOUTH);
-
-        frame.add(panel);
     }
-
 
     private void displayActivityData(JTextArea textArea) {
         textArea.setText(""); // Clear the text area
@@ -183,6 +216,7 @@ public class ActivityTrackerUI {
         return null; // Activity not found
     }
     public static void main(String[] args) {
+
         // Example data for testing
         ArrayList<Activity> activities = new ArrayList<>();
         activities.add(new Activity("Running", "04/01/2020", 67, 8.80, 152));
