@@ -118,10 +118,14 @@ public class ActivityTrackerUI {
         avgCaloriesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                double averageCalories = calculateAverageCalories();
-                textArea.append("\nAverage amount of burnt calories is " + averageCalories + " cal");
+                String selectedActivityType = (String) activityTypeComboBox.getSelectedItem();
+                if (selectedActivityType != null) {
+                    double averageCalories = calculateAverageCalories(selectedActivityType);
+                    textArea.append("\nAverage amount of burnt calories for " + selectedActivityType + " activities is " + averageCalories + " cal");
+                }
             }
         });
+
 
 
 
@@ -197,16 +201,20 @@ public class ActivityTrackerUI {
         return activityCount > 0 ? totalDistance / activityCount : 0;
     }
 
-    private double calculateAverageCalories() {
+    private double calculateAverageCalories(String activityType) {
         double totalCalories = 0;
-        int activityCount = listOfActivities.size();
+        int activityCount = 0;
 
         for (Activity activity : listOfActivities) {
-            totalCalories += activity.getCaloriesBurnt();
+            if (Objects.equals(activity.getType_of_activity(), activityType)) {
+                totalCalories += activity.getCaloriesBurnt();
+                activityCount++;
+            }
         }
 
         return activityCount > 0 ? totalCalories / activityCount : 0;
     }
+
     private Activity findActivityByDate(String date, String activityType) {
         for (Activity activity : listOfActivities) {
             if (activity.getDate().equals(date) && activity.getType_of_activity().equals(activityType)) {
