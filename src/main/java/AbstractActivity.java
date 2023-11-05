@@ -33,8 +33,6 @@ public abstract class AbstractActivity {
 
     public double getAvg_heart_rate() {return avg_heart_rate;}
 
-
-
     public void setType_of_activity(String type_of_activity) {this.type_of_activity = type_of_activity;}
 
     public void setDuration_min(double duration_min) {this.duration_min = duration_min;}
