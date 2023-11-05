@@ -15,6 +15,12 @@ public class MainApp {
 
         CSV_reader.fileReader(fileSource, listOfActivities);
 
+        for(Activity a: listOfActivities){
+            System.out.println(a.getCaloriesBurnt());
+        }
+
+//        CompareActivities.naturalOrder(listOfActivities);
+
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
