@@ -5,6 +5,8 @@
 
 public class ExampleTypeActivity {
 
+    //comment 1: allow users to get a description of particular type of activity, or of all types at the same time
+
     public static void getRunningDescription() {
       Activity runningExample = new Activity("Running Activity", "01/01/2011", 12, 1.5, 90){
           @Override
@@ -30,6 +32,13 @@ public class ExampleTypeActivity {
                 return "Swimming is the self-propulsion of a person through water, or other liquid, usually for recreation, sport, exercise, or survival.";
             }
         };
+    }
+
+
+    public static void getAllDescriptions() {
+        getRunningDescription();
+        getCyclingDescription();
+        getSwimmingDescription();
     }
 
 }
