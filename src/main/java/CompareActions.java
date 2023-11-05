@@ -2,10 +2,7 @@ public class CompareActions {
 
 
 
-    public int compareDates(Activity activity1, Activity activity2)
-    {
-        return activity1.getDate().compareTo(activity2.getDate());
-    }
+
 
     public int compareDuration(Activity activity1, Activity activity2)
     {

@@ -28,7 +28,6 @@ public class CompareActivities extends CompareActions{
         Activity comparingAct2 = checkIfActivityExists(listOfActivities);
 
 
-        () -> CompareActions
 
     }
 
