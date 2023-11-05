@@ -76,8 +76,12 @@ public class ActivityTrackerUI {
             public void actionPerformed(ActionEvent e) {
                 String selectedActivityType = (String) activityTypeComboBox.getSelectedItem();
                 if (selectedActivityType != null) {
-                    String selectedDate = JOptionPane.showInputDialog("Enter the date (yyyy-MM-dd):");
+                    String selectedDate = JOptionPane.showInputDialog("Enter the date (MM/DD/YYYY):");
+                    System.out.println("Entered Date: " + selectedDate);
+
                     Activity selectedActivity = findActivityByDate(selectedDate, selectedActivityType);
+                    System.out.println("Selected Activity: " + selectedActivity);
+
                     if (selectedActivity != null) {
                         textArea.append("\nActivity Type: " + selectedActivity.getType_of_activity());
                         textArea.append("\nDate: " + selectedActivity.getDate());
@@ -105,7 +109,7 @@ public class ActivityTrackerUI {
             public void actionPerformed(ActionEvent e) {
                 String selectedActivityType = (String) activityTypeComboBox.getSelectedItem();
                 if (selectedActivityType != null) {
-                    String selectedDate = JOptionPane.showInputDialog("Enter the date (yyyy-MM-dd):");
+                    String selectedDate = JOptionPane.showInputDialog("Enter the date (MM/DD/YYYY):");
                     Activity selectedActivity = findActivityByDate(selectedDate, selectedActivityType);
                     if (selectedActivity != null) {
                         String details = "Intensity: " + selectedActivity.getIntensity() + ", Calories Burnt: " + selectedActivity.getCaloriesBurnt() + " cal";
@@ -172,18 +176,27 @@ public class ActivityTrackerUI {
     }
     private Activity findActivityByDate(String date, String activityType) {
         for (Activity activity : listOfActivities) {
-            if (Objects.equals(activity.getType_of_activity(), activityType) && Objects.equals(activity.getDate(), date)) {
+            if (activity.getDate().equals(date) && activity.getType_of_activity().equals(activityType)) {
                 return activity;
             }
         }
         return null; // Activity not found
     }
+
     public static void main(String[] args) {
-        // Example data for testing
+
         ArrayList<Activity> activities = new ArrayList<>();
-        activities.add(new Activity("Running", "2023-11-01", 60, 5.3, 140));
-        activities.add(new Activity("Swimming", "2023-11-02", 45, 2.5, 125));
-        activities.add(new Activity("Cycling", "2023-11-03", 90, 10.1, 130));
+        activities.add(new Activity("Running", "04/01/2020", 67, 8.80, 152));
+        activities.add(new Activity("Swimming", "05/01/2020", 92, 4.01, 145));
+        activities.add(new Activity("Cycling", "10/01/2020", 107, 27.45, 106));
+        activities.add(new Activity("Swimming", "06/01/2020", 57, 1.63, 104));
+        activities.add(new Activity("Swimming", "07/01/2020", 120, 7.37, 148));
+        activities.add(new Activity("Running", "03/01/2020", 101, 14.10, 151));
+        activities.add(new Activity("Cycling", "02/01/2020", 33, 6.06, 107));
+        activities.add(new Activity("Cycling", "11/01/2020", 71, 17.16, 143));
+        activities.add(new Activity("Swimming", "08/01/2020", 103, 6.00, 95));
+        activities.add(new Activity("Cycling", "07/01/2020", 98, 25.34, 112));
+
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
