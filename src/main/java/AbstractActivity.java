@@ -3,8 +3,8 @@ import java.util.Objects;
 public abstract class AbstractActivity {
 
     private String type_of_activity;
-    private double duration_min;
     private String date; //MM/DD/YYYY
+    private double duration_min;
     private double distance_km;
     private double avg_heart_rate;
 

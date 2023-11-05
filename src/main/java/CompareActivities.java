@@ -11,7 +11,7 @@ import java.util.Scanner;
 
  */
 
-public class CompareActivities {
+public class CompareActivities extends CompareActions{
 
     public static void naturalOrder(ArrayList<Activity> listOfActivities) {
 
@@ -27,6 +27,8 @@ public class CompareActivities {
 
         Activity comparingAct2 = checkIfActivityExists(listOfActivities);
 
+
+        () -> CompareActions
 
     }
 
