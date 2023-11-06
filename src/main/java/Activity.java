@@ -124,17 +124,17 @@ public class Activity extends AbstractActivity implements Comparable<Activity>{
         if(typeComparison !=0){
             return typeComparison;
         }
-        int durationComparison = Double.compare(this.getDuration_min(), other.getDuration_min());
-        if (durationComparison != 0) {
-            return durationComparison;
-        }
+
 
         int dateComparison = this.getDate().compareTo(other.getDate());
         if (dateComparison != 0) {
             return dateComparison;
         }
 
-
+        int durationComparison = Double.compare(this.getDuration_min(), other.getDuration_min());
+        if (durationComparison != 0) {
+            return durationComparison;
+        }
 
         int distanceComparison = Double.compare(this.getDistance_km(), other.getDistance_km());
         if (distanceComparison != 0) {
