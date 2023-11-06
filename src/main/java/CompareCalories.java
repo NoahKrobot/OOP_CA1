@@ -1,6 +1,9 @@
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 
 public class CompareCalories implements Comparator<Activity> {
+
     @Override
     public int compare(Activity activity1, Activity activity2) {
 
@@ -12,4 +15,7 @@ public class CompareCalories implements Comparator<Activity> {
             return 1;
         }
     }
+
+
+
 }
