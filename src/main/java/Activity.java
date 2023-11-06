@@ -117,9 +117,44 @@ public class Activity extends AbstractActivity implements Comparable<Activity>{
 
     @Override
     public int compareTo(Activity other) {
-        return this.getDate().compareTo(other.getDate());
-    }
 
+        //type > Date > duration > distance > BPM > Intensity > Calories
+
+        int typeComparison = this.getType_of_activity().compareTo(other.getType_of_activity());
+        if(typeComparison !=0){
+            return typeComparison;
+        }
+        int durationComparison = Double.compare(this.getDuration_min(), other.getDuration_min());
+        if (durationComparison != 0) {
+            return durationComparison;
+        }
+
+        int dateComparison = this.getDate().compareTo(other.getDate());
+        if (dateComparison != 0) {
+            return dateComparison;
+        }
+
+
+
+        int distanceComparison = Double.compare(this.getDistance_km(), other.getDistance_km());
+        if (distanceComparison != 0) {
+            return distanceComparison;
+        }
+
+        int heartComparison = Double.compare(this.getAvg_heart_rate(), other.getAvg_heart_rate());
+        if (heartComparison != 0) {
+            return heartComparison;
+        }
+
+        int intensityComparison = this.getIntensity().compareTo(other.getIntensity());
+        if (intensityComparison != 0) {
+            return intensityComparison;
+        }
+
+        int caloriesComparison = Double.compare(this.getCaloriesBurnt(), other.getCaloriesBurnt());
+
+        return heartComparison;
+    }
 
 }
 

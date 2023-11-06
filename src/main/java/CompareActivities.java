@@ -15,10 +15,15 @@ public class CompareActivities{
 
     public static void naturalOrder(ArrayList<Activity> listOfActivities) {
 
+        System.out.println("\n\n\n");
+
+        Collections.sort(listOfActivities);
+        for(Activity a: listOfActivities){
+            System.out.println(a.toString());
+        }
 
 
-
-        System.out.println(" *** Sorted by types *** ");
+        System.out.println(" \n\n\n*** Sorted by types *** ");
         Collections.sort(listOfActivities, new CompareTypes());
         for(Activity a: listOfActivities){
             System.out.println(a.toString());

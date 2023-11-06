@@ -53,8 +53,8 @@ public abstract class AbstractActivity {
     public String toString() {
         return "Activity{" +
                 "type_of_activity='" + type_of_activity + '\'' +
-                ", duration_min=" + duration_min +
                 ", date='" + date + '\'' +
+                ", duration_min=" + duration_min +
                 ", distance_km=" + distance_km +
                 ", avg_heart_rate=" + avg_heart_rate +
                 '}';
