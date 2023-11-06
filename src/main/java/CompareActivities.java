@@ -25,7 +25,7 @@ public class CompareActivities{
 //        displayCompareDistance(listOfActivities);
 //        displayCompareDuration(listOfActivities);
 //        displayCompareHeart(listOfActivities);
-//        displayCompareCalories(listOfActivities);
+        displayCompareCalories(listOfActivities);
 
 
 
