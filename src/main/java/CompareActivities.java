@@ -18,56 +18,48 @@ public class CompareActivities{
         System.out.println("\n\n\n");
 
         Collections.sort(listOfActivities);
-        for(Activity a: listOfActivities){
-            System.out.println(a.toString());
-        }
+        displayList(listOfActivities);
+
 
 
         System.out.println(" \n\n\n*** Sorted by types *** ");
         Collections.sort(listOfActivities, new CompareTypes());
-        for(Activity a: listOfActivities){
-            System.out.println(a.toString());
-        }
+        displayList(listOfActivities);
+
 
         Collections.sort(listOfActivities);
 
         System.out.println("\n\n\n *** Sorted by dates *** ");
         // Sort by duration using ActivityDurationComparator
         Collections.sort(listOfActivities, new CompareDates());
-        for(Activity a: listOfActivities){
-            System.out.println(a.toString());
-        }
+        displayList(listOfActivities);
+
 
         Collections.sort(listOfActivities);
 
         System.out.println("\n\n\n *** Sorted by distances *** ");
         Collections.sort(listOfActivities, new CompareDistances());
-        for(Activity a: listOfActivities){
-            System.out.println(a.toString());
-        }
+        displayList(listOfActivities);
+
 
         Collections.sort(listOfActivities);
 
         System.out.println("\n\n\n *** Sorted by durations *** ");
         Collections.sort(listOfActivities, new CompareDuration());
-        for(Activity a: listOfActivities){
-            System.out.println(a.toString());
-        }
+        displayList(listOfActivities);
+
 
         Collections.sort(listOfActivities);
         System.out.println("\n\n\n *** Sorted by heart beats *** ");
         Collections.sort(listOfActivities, new CompareHeartBeats());
-        for(Activity a: listOfActivities){
-            System.out.println(a.toString());
-        }
+        displayList(listOfActivities);
+
 
 
         Collections.sort(listOfActivities);
         System.out.println("\n\n\n *** Sorted by calories burnt *** ");
         Collections.sort(listOfActivities, new CompareHeartBeats());
-        for(Activity a: listOfActivities){
-            System.out.println(a.toString());
-        }
+        displayList(listOfActivities);
 
 
         //        date is MM/DD/YYYY
@@ -82,6 +74,12 @@ public class CompareActivities{
 //
 //        Activity comparingAct2 = checkIfActivityExists(listOfActivities);
 
+    }
+
+    public static void displayList(ArrayList<Activity> listOfActivities){
+        for(Activity a: listOfActivities){
+            System.out.println(a.toString());
+        }
     }
 
 
