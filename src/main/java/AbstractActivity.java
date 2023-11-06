@@ -48,7 +48,6 @@ public abstract class AbstractActivity {
 
 
 
-
     @Override
     public String toString() {
         return "Activity{" +

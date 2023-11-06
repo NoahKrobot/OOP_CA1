@@ -3,6 +3,7 @@ import java.util.Objects;
 public class Activity extends AbstractActivity implements Comparable<Activity>{
 
 
+
     public static enum INTENSITY{VERY_LIGHT, LIGHT, MODERATE, VIGOROUS, VERY_VIGOROUS}
     private INTENSITY Intensity;
 
@@ -19,6 +20,7 @@ public class Activity extends AbstractActivity implements Comparable<Activity>{
         caloriesCalculated = intensityValue * durationInMinutes;
         return caloriesCalculated;
     }
+
 
     public double getCaloriesBurnt(){
         //calories burnt = Intensity Value * duration in minutes
@@ -62,7 +64,7 @@ public class Activity extends AbstractActivity implements Comparable<Activity>{
                   finalCaloriesBurnt = calculateCalories(15 , getDuration_min());
               }
           }
-          return finalCaloriesBurnt;
+              return finalCaloriesBurnt;
       }
 
 
@@ -156,6 +158,12 @@ public class Activity extends AbstractActivity implements Comparable<Activity>{
         return heartComparison;
     }
 
+    @Override
+    public String toString() {
+        return super.toString() +"  Activity{" +
+                "Calories Burnt =" +getCaloriesBurnt() +
+                "} " ;
+    }
 }
 
 

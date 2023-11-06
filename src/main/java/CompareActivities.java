@@ -58,7 +58,7 @@ public class CompareActivities{
 
         Collections.sort(listOfActivities);
         System.out.println("\n\n\n *** Sorted by calories burnt *** ");
-        Collections.sort(listOfActivities, new CompareHeartBeats());
+        Collections.sort(listOfActivities, new CompareCalories());
         displayList(listOfActivities);
 
 

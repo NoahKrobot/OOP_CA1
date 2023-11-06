@@ -5,7 +5,7 @@ public class CompareDistances  implements Comparator<Activity> {
     public int compare(Activity activity1, Activity activity2) {
 
         if (activity1.getDistance_km() < activity2.getDistance_km()) {
-            return -1;	// a negative value
+            return -1;
         } else if (activity1.getDistance_km() == activity2.getDistance_km()) {
             return 0;
         } else {
