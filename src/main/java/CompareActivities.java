@@ -25,7 +25,9 @@ public class CompareActivities{
 //        displayCompareDistance(listOfActivities);
 //        displayCompareDuration(listOfActivities);
 //        displayCompareHeart(listOfActivities);
-        displayCompareCalories(listOfActivities);
+//        displayCompareCalories(listOfActivities);
+
+        displayCompareDatesReversee(listOfActivities);
 
 
 
@@ -79,6 +81,13 @@ public class CompareActivities{
         Collections.sort(listOfActivities);
         System.out.println("\n\n\n *** Sorted by dates *** ");
         Collections.sort(listOfActivities, new CompareDates());
+        displayList(listOfActivities);
+    }
+
+    public static void displayCompareDatesReversee(ArrayList<Activity> listOfActivities){
+        Collections.sort(listOfActivities);
+        System.out.println("\n\n\n *** Sorted by dates *** ");
+        Collections.sort(listOfActivities, new CompareDatesReversed());
         displayList(listOfActivities);
     }
 
