@@ -160,6 +160,7 @@ public class Activity extends AbstractActivity implements Comparable<Activity>{
 
     @Override
     public String toString() {
+
         return super.toString() +"  Activity{" +
                 "Calories Burnt =" +getCaloriesBurnt() +
                 "} " ;

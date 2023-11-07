@@ -1,69 +1,70 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Objects;
 
-
 public class ActivityTrackerUI {
-    private JFrame frame;
-    private ArrayList<Activity> listOfActivities;
-
+    private final JFrame frame;
+    private final ArrayList<Activity> listOfActivities;
+    private JComboBox<String> sortOptions;
     public ActivityTrackerUI(ArrayList<Activity> listOfActivities) {
         this.listOfActivities = listOfActivities;
         frame = new JFrame("Activity Tracker");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new BorderLayout()); // Use BorderLayout for the main frame
+        frame.setLayout(new BorderLayout());
         createUIComponents();
-        frame.pack();
+        frame.setSize(800, 600); // Set a fixed size for the frame
+        frame.setLocationRelativeTo(null); // Center the frame on the screen
         frame.setVisible(true);
     }
-    private JButton createStyledButton(String text, String bgColorRGB) {
+
+    private JButton createStyledButton(String text) {
         JButton button = new JButton(text);
-        button.setFont(new Font("Arial", Font.BOLD, 16));
-        String[] rgb = bgColorRGB.split(",");
-        int r = Integer.parseInt(rgb[0]);
-        int g = Integer.parseInt(rgb[1]);
-        int b = Integer.parseInt(rgb[2]);
-
-
-        button.setBackground(Color.ORANGE);
-
-
-        button.setForeground(Color.BLACK);
-
-
         button.setPreferredSize(new Dimension(250, 60));
-
+        button.setBackground(new Color(108, 122, 137)); // Modern blue color
+        button.setForeground(Color.BLACK);
+        button.setFont(new Font("Arial", Font.BOLD, 16));
         return button;
     }
 
     private void createUIComponents() {
         JPanel mainPanel = new JPanel(new BorderLayout());
 
-
         JLabel headerLabel = new JLabel("Activity Tracker");
         headerLabel.setFont(new Font("Arial", Font.BOLD, 24));
         headerLabel.setHorizontalAlignment(JLabel.CENTER);
-        headerLabel.setForeground(Color.WHITE); // Change the text color to white
+        headerLabel.setForeground(Color.WHITE);
+        headerLabel.setBackground(new Color(108, 122, 137)); // Dark background color
         headerLabel.setOpaque(true);
-        headerLabel.setBackground(Color.BLACK); // Change the background color to black
         mainPanel.add(headerLabel, BorderLayout.NORTH);
 
         JPanel centerPanel = new JPanel(new BorderLayout());
-        centerPanel.setBackground(Color.BLACK); // Change the background color of the center panel to black
+        centerPanel.setBackground(new Color(108, 122, 137)); // Dark background color
 
         JTextArea textArea = new JTextArea(20, 50);
         textArea.setEditable(false);
         textArea.setFont(new Font("Arial", Font.PLAIN, 16));
-        textArea.setBackground(Color.BLACK); // Change the background color of the text area to black
-        textArea.setForeground(Color.WHITE); // Change the text color to white
+        textArea.setBackground(new Color(44, 62, 80));
+        textArea.setForeground(Color.WHITE);
         JScrollPane scrollPane = new JScrollPane(textArea);
         centerPanel.add(scrollPane, BorderLayout.CENTER);
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+        JPanel buttonPanel = new JPanel(new GridLayout(0, 2, 10, 10)); // GridLayout with 2 columns
+
+        sortOptions = new JComboBox<>(new String[] {
+                "Calories Burned (Descending)",
+                "Date (Ascending)",
+                "Date (Descending)",
+                "Activity Duration (Ascending)",
+                "Activity Duration (Descending)",
+                "Type of Activity",
+                "Distance (Ascending)",
+                "Distance (Descending)"
+        });
+
+
+
+
 
         JComboBox<String> activityTypeComboBox = new JComboBox<>();
         for (Activity activity : listOfActivities) {
@@ -73,105 +74,117 @@ public class ActivityTrackerUI {
             }
         }
 
-        // Create styled buttons
-        JButton avgDistanceButton = createStyledButton("Calculate Average Distance", "50,150,50");
-        avgDistanceButton.setForeground(Color.BLACK);
-        avgDistanceButton.setBackground(Color.ORANGE);
 
-        JButton avgCaloriesButton = createStyledButton("Calculate Average Calories Burnt", "50,150,50");
-        avgCaloriesButton.setForeground(Color.BLACK);
-        avgCaloriesButton.setBackground(Color.ORANGE);
+        JButton avgDistanceButton = createStyledButton("Calculate Average Distance");
+        JButton avgCaloriesButton = createStyledButton("Calculate Average Calories Burnt");
+        JButton viewActivityButton = createStyledButton("View Activity Details");
+        JButton getActivityDetailsButton = createStyledButton("Get Intensity and Calories Burnt");
 
-        JButton viewActivityButton = createStyledButton("View Activity Details", "255,0,0");
-        viewActivityButton.setForeground(Color.BLACK);
-        viewActivityButton.setBackground(Color.ORANGE);
+// Create a panel for Sort Options and Sort By button
+        JPanel sortByPanel = new JPanel(new BorderLayout());
 
-        JButton getActivityDetailsButton = createStyledButton("Get Intensity and Calories Burnt", "255,0,0");
-        getActivityDetailsButton.setForeground(Color.BLACK);
-        getActivityDetailsButton.setBackground(Color.ORANGE); // Change the button's background color to orange
+// Panel for Sort Options dropdown
+        JPanel sortOptionsPanel = new JPanel();
+        sortOptionsPanel.add(sortOptions);
 
+// Create the "Sort By" button with a smaller size
+        JButton sortByButton = createStyledButton("Sort By");
+        sortByButton.setPreferredSize(new Dimension(100, 20)); // Adjust the button size
+
+// Add Sort Options and Sort By button to the sortByPanel
+        sortByPanel.add(sortOptionsPanel, BorderLayout.CENTER);
+        sortByPanel.add(sortByButton, BorderLayout.EAST);
+
+// Add the sortByPanel to the buttonPanel
         buttonPanel.add(activityTypeComboBox);
         buttonPanel.add(avgDistanceButton);
         buttonPanel.add(avgCaloriesButton);
         buttonPanel.add(viewActivityButton);
         buttonPanel.add(getActivityDetailsButton);
+        buttonPanel.add(sortByPanel);
 
         centerPanel.add(buttonPanel, BorderLayout.EAST);
 
         mainPanel.add(centerPanel, BorderLayout.CENTER);
-
         frame.add(mainPanel);
 
-        avgDistanceButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selectedActivityType = (String) activityTypeComboBox.getSelectedItem();
-                if (selectedActivityType != null) {
-                    double averageDistance = calculateAverageDistance(selectedActivityType);
-                    textArea.append("\nAverage distance in " + selectedActivityType + " activities is: " + averageDistance + " km");
+
+        avgDistanceButton.addActionListener(e -> {
+            String selectedActivityType = (String) activityTypeComboBox.getSelectedItem();
+            if (selectedActivityType != null) {
+                double averageDistance = calculateAverageDistance(selectedActivityType);
+                textArea.append("\nAverage distance in " + selectedActivityType + " activities is: " + averageDistance + " km");
+            }
+        });
+
+
+
+        avgCaloriesButton.addActionListener(e -> {
+            String selectedActivityType = (String) activityTypeComboBox.getSelectedItem();
+            if (selectedActivityType != null) {
+                double averageCalories = calculateAverageCalories(selectedActivityType);
+                textArea.append("\nAverage amount of burnt calories for " + selectedActivityType + " activities is " + averageCalories + " cal");
+            }
+        });
+
+
+
+
+        viewActivityButton.addActionListener(e -> {
+            String selectedActivityType = (String) activityTypeComboBox.getSelectedItem();
+            if (selectedActivityType != null) {
+                String selectedDate = JOptionPane.showInputDialog("Enter the date (MM/DD/YYYY):");
+                System.out.println("Entered Date: " + selectedDate);
+
+                Activity selectedActivity = findActivityByDate(selectedDate, selectedActivityType);
+                System.out.println("Selected Activity: " + selectedActivity);
+
+                if (selectedActivity != null) {
+                    textArea.append("\nActivity Type: " + selectedActivity.getType_of_activity());
+                    textArea.append("\nDate: " + selectedActivity.getDate());
+                    textArea.append("\nDistance: " + selectedActivity.getDistance_km() + " km");
+                    textArea.append("\nIntensity: " + selectedActivity.getIntensity());
+                    textArea.append("\nCalories Burnt: " + selectedActivity.getCaloriesBurnt() + " cal");
+                } else {
+                    textArea.append("\nActivity not found for the given date and type.");
                 }
             }
         });
 
 
 
-        avgCaloriesButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selectedActivityType = (String) activityTypeComboBox.getSelectedItem();
-                if (selectedActivityType != null) {
-                    double averageCalories = calculateAverageCalories(selectedActivityType);
-                    textArea.append("\nAverage amount of burnt calories for " + selectedActivityType + " activities is " + averageCalories + " cal");
+        getActivityDetailsButton.addActionListener(e -> {
+            String selectedActivityType = (String) activityTypeComboBox.getSelectedItem();
+            if (selectedActivityType != null) {
+                String selectedDate = JOptionPane.showInputDialog("Enter the date (MM/DD/YYYY):");
+                Activity selectedActivity = findActivityByDate(selectedDate, selectedActivityType);
+                if (selectedActivity != null) {
+                    String details = "Intensity: " + selectedActivity.getIntensity() + ", Calories Burnt: " + selectedActivity.getCaloriesBurnt() + " cal";
+                    textArea.append("\n" + details);
+                } else {
+                    textArea.append("\nActivity not found for the given date and type.");
                 }
             }
         });
 
 
-
-
-        viewActivityButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selectedActivityType = (String) activityTypeComboBox.getSelectedItem();
-                if (selectedActivityType != null) {
-                    String selectedDate = JOptionPane.showInputDialog("Enter the date (MM/DD/YYYY):");
-                    System.out.println("Entered Date: " + selectedDate);
-
-                    Activity selectedActivity = findActivityByDate(selectedDate, selectedActivityType);
-                    System.out.println("Selected Activity: " + selectedActivity);
-
-                    if (selectedActivity != null) {
-                        textArea.append("\nActivity Type: " + selectedActivity.getType_of_activity());
-                        textArea.append("\nDate: " + selectedActivity.getDate());
-                        textArea.append("\nDistance: " + selectedActivity.getDistance_km() + " km");
-                        textArea.append("\nIntensity: " + selectedActivity.getIntensity());
-                        textArea.append("\nCalories Burnt: " + selectedActivity.getCaloriesBurnt() + " cal");
-                    } else {
-                        textArea.append("\nActivity not found for the given date and type.");
-                    }
-                }
-            }
-        });
-
-
-
-        getActivityDetailsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selectedActivityType = (String) activityTypeComboBox.getSelectedItem();
-                if (selectedActivityType != null) {
-                    String selectedDate = JOptionPane.showInputDialog("Enter the date (MM/DD/YYYY):");
-                    Activity selectedActivity = findActivityByDate(selectedDate, selectedActivityType);
-                    if (selectedActivity != null) {
-                        String details = "Intensity: " + selectedActivity.getIntensity() + ", Calories Burnt: " + selectedActivity.getCaloriesBurnt() + " cal";
-                        textArea.append("\n" + details);
-                    } else {
-                        textArea.append("\nActivity not found for the given date and type.");
-                    }
-                }
-            }
-        });
-    }
+     sortByButton.addActionListener(e -> {
+         String selectedSortOption = (String) sortOptions.getSelectedItem();
+         if (selectedSortOption != null) {
+             switch (selectedSortOption) {
+                 case "Calories Burned (Descending)" -> listOfActivities.sort(new CompareCalories());
+                 case "Date (Ascending)" -> listOfActivities.sort(new CompareDates());
+                 case "Date (Descending)" -> listOfActivities.sort(new CompareDatesReversed());
+                 case "Activity Duration (Ascending)" -> listOfActivities.sort(new CompareDuration());
+                 case "Activity Duration (Descending)" -> listOfActivities.sort(new CompareDurationReversed());
+                 case "Type of Activity" -> listOfActivities.sort(new CompareTypes());
+                 case "Distance (Ascending)" -> listOfActivities.sort(new CompareDistances());
+                 case "Distance (Descending)" -> listOfActivities.sort(new CompareDistanceReversed());
+             }
+             displayActivityData(textArea);
+         }
+     });
+}
 
     private void displayActivityData(JTextArea textArea) {
         textArea.setText(""); // Clear the text area
@@ -238,11 +251,6 @@ public class ActivityTrackerUI {
         activities.add(new Activity("Swimming", "08/01/2020", 103, 6.00, 95));
         activities.add(new Activity("Cycling", "07/01/2020", 98, 25.34, 112));
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new ActivityTrackerUI(activities);
-            }
-        });
+        SwingUtilities.invokeLater(() -> new ActivityTrackerUI(activities));
     }
 }
