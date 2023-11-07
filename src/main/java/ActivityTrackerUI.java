@@ -78,24 +78,20 @@ public class ActivityTrackerUI {
         JButton avgDistanceButton = createStyledButton("Calculate Average Distance");
         JButton avgCaloriesButton = createStyledButton("Calculate Average Calories Burnt");
         JButton viewActivityButton = createStyledButton("View Activity Details");
-        JButton getActivityDetailsButton = createStyledButton("Get Intensity and Calories Burnt");
+        JButton getActivityDetailsButton = createStyledButton("Search Activity By Date");
 
-// Create a panel for Sort Options and Sort By button
         JPanel sortByPanel = new JPanel(new BorderLayout());
 
-// Panel for Sort Options dropdown
         JPanel sortOptionsPanel = new JPanel();
         sortOptionsPanel.add(sortOptions);
 
-// Create the "Sort By" button with a smaller size
         JButton sortByButton = createStyledButton("Sort By");
-        sortByButton.setPreferredSize(new Dimension(100, 20)); // Adjust the button size
 
-// Add Sort Options and Sort By button to the sortByPanel
+        sortByButton.setPreferredSize(new Dimension(100, 20));
+
         sortByPanel.add(sortOptionsPanel, BorderLayout.CENTER);
         sortByPanel.add(sortByButton, BorderLayout.EAST);
 
-// Add the sortByPanel to the buttonPanel
         buttonPanel.add(activityTypeComboBox);
         buttonPanel.add(avgDistanceButton);
         buttonPanel.add(avgCaloriesButton);
@@ -240,16 +236,16 @@ public class ActivityTrackerUI {
 
         // Example data for testing
         ArrayList<Activity> activities = new ArrayList<>();
-        activities.add(new Activity("Running", "04/01/2020", 67, 8.80, 152));
-        activities.add(new Activity("Swimming", "05/01/2020", 92, 4.01, 145));
-        activities.add(new Activity("Cycling", "10/01/2020", 107, 27.45, 106));
-        activities.add(new Activity("Swimming", "06/01/2020", 57, 1.63, 104));
-        activities.add(new Activity("Swimming", "07/01/2020", 120, 7.37, 148));
-        activities.add(new Activity("Running", "03/01/2020", 101, 14.10, 151));
-        activities.add(new Activity("Cycling", "02/01/2020", 33, 6.06, 107));
-        activities.add(new Activity("Cycling", "11/01/2020", 71, 17.16, 143));
-        activities.add(new Activity("Swimming", "08/01/2020", 103, 6.00, 95));
-        activities.add(new Activity("Cycling", "07/01/2020", 98, 25.34, 112));
+//        activities.add(new Activity("Running", "04/01/2020", 67, 8.80, 152));
+//        activities.add(new Activity("Swimming", "05/01/2020", 92, 4.01, 145));
+//        activities.add(new Activity("Cycling", "10/01/2020", 107, 27.45, 106));
+//        activities.add(new Activity("Swimming", "06/01/2020", 57, 1.63, 104));
+//        activities.add(new Activity("Swimming", "07/01/2020", 120, 7.37, 148));
+//        activities.add(new Activity("Running", "03/01/2020", 101, 14.10, 151));
+//        activities.add(new Activity("Cycling", "02/01/2020", 33, 6.06, 107));
+//        activities.add(new Activity("Cycling", "11/01/2020", 71, 17.16, 143));
+//        activities.add(new Activity("Swimming", "08/01/2020", 103, 6.00, 95));
+//        activities.add(new Activity("Cycling", "07/01/2020", 98, 25.34, 112));
 
         SwingUtilities.invokeLater(() -> new ActivityTrackerUI(activities));
     }
