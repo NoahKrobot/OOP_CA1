@@ -167,21 +167,33 @@ public class ActivityTrackerUI {
         });
 
 
+        // Search by intensity button listener
         searchByIntensityButton.addActionListener(e -> {
-            List<String> uniqueIntensities = getUniqueIntensities();
+            String selectedActivityType = (String) activityTypeComboBox.getSelectedItem();
+            if (selectedActivityType != null) {
+                JComboBox<String> intensityComboBox = new JComboBox<>();
+                List<String> uniqueIntensities = getUniqueIntensities();
 
-            if (uniqueIntensities.isEmpty()) {
-                JOptionPane.showMessageDialog(frame, "No unique intensities found.");
-            } else {
-                String selectedIntensity = (String) JOptionPane.showInputDialog(frame,
-                        "Select an intensity:", "Intensity Selection", JOptionPane.QUESTION_MESSAGE,
-                        null, uniqueIntensities.toArray(), uniqueIntensities.get(0));
+                for (String intensity : uniqueIntensities) {
+                    intensityComboBox.addItem(intensity);
+                }
 
-                if (selectedIntensity != null) {
-                    searchActivityByIntensity(selectedIntensity, textArea);
+                JPanel dialogPanel = new JPanel();
+                dialogPanel.add(new JLabel("Select Intensity:"));
+                dialogPanel.add(intensityComboBox);
+
+                int result = JOptionPane.showConfirmDialog(null, dialogPanel, "Search by Intensity", JOptionPane.OK_CANCEL_OPTION);
+
+                if (result == JOptionPane.OK_OPTION) {
+                    String selectedIntensity = (String) intensityComboBox.getSelectedItem();
+                    if (selectedIntensity != null) {
+                        searchActivityByIntensity( selectedIntensity, textArea);
+                    }
                 }
             }
         });
+
+
 
 
         // Search by heart rate button listener
@@ -345,19 +357,19 @@ public class ActivityTrackerUI {
 
 
 
-    private void searchActivityByIntensity(String intensity, JTextArea textArea) {
+    private void searchActivityByIntensity(String selectedIntensity, JTextArea textArea) {
         textArea.setText(""); // Clear the text area
 
-        textArea.append("Activities with Intensity: " + intensity + ":\n");
+        textArea.append("Activities with Intensity: " + selectedIntensity + ":\n");
 
         for (Activity activity : listOfActivities) {
-            System.out.println("Comparing: " + activity.getIntensity() + " to " + intensity); // Debug line
-            if (Objects.equals(activity.getIntensity(), intensity)) {
+            if (activity.getIntensity().toString().equals(selectedIntensity)) {
+                // Display activity details
                 textArea.append("Type: " + activity.getType_of_activity() + "\n");
                 textArea.append("Date: " + activity.getDate() + "\n");
                 textArea.append("Duration (min): " + activity.getDuration_min() + "\n");
                 textArea.append("Distance (km): " + activity.getDistance_km() + "\n");
-                textArea.append("Average BPM: " + activity.getAvg_heart_rate() + "\n");
+                textArea.append("Average BPM: " + activity.getAvg_heart_rate() + " bpm\n");
                 textArea.append("Calories Burned: " + activity.getCaloriesBurnt() + " cal\n\n");
             }
         }
@@ -366,7 +378,9 @@ public class ActivityTrackerUI {
 
 
 
- private void searchActivityByHeartRate(String heartRate, JTextArea textArea) {
+
+
+    private void searchActivityByHeartRate(String heartRate, JTextArea textArea) {
         textArea.setText(""); // Clear the text area
 
         textArea.append("Activities with Heart Rate (bpm): " + heartRate + ":\n");
