@@ -10,12 +10,13 @@ import java.util.List;
 public class ActivityTrackerUI {
     private final JFrame frame;
     private final ArrayList<Activity> listOfActivities;
+    private final ArrayList<Activity> filteredActivities;
     private JComboBox<String> sortOptions;
-    private JComboBox<String> heartRateComboBox;
-     private MyTableModel model;
+    private MyTableModel model;
     private String fileSource;
     public ActivityTrackerUI(ArrayList<Activity> listOfActivities) {
         this.listOfActivities = listOfActivities;
+        this.filteredActivities = new ArrayList<>();
         this.fileSource = fileSource;
         frame = new JFrame("Activity Tracker");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -94,11 +95,12 @@ public class ActivityTrackerUI {
 
         JButton avgDistanceButton = createStyledButton("Calculate Average Distance");
         JButton avgCaloriesButton = createStyledButton("Calculate Average Calories Burnt");
-        JButton viewActivityButton = createStyledButton("View Activity Details");
+        JButton viewActivityButton = createStyledButton("View Activity Details by date");
 //        JButton getActivityDetailsButton = createStyledButton("Search Activity By Date");
         JButton searchByIntensityButton = createStyledButton("Search by Intensity");
         JButton searchByHeartRateButton = createStyledButton("Search by Heart Rate");
-
+        JButton filterByDistanceButton  = createStyledButton("Filter by Distance");
+        JButton filterByDurationButton  = createStyledButton("Filter by Duration");
 
 
 
@@ -122,6 +124,8 @@ public class ActivityTrackerUI {
         buttonPanel.add(activityTypeComboBox);
         buttonPanel.add(avgDistanceButton);
         buttonPanel.add(avgCaloriesButton);
+        buttonPanel.add(filterByDistanceButton);
+        buttonPanel.add(filterByDurationButton);
 
         buttonPanel.add(viewActivityButton);
 //        buttonPanel.add(getActivityDetailsButton);
@@ -154,34 +158,53 @@ public class ActivityTrackerUI {
         });
 
 
-
-
-        viewActivityButton.addActionListener(e -> {
-            String selectedDate = JOptionPane.showInputDialog("Enter the date (MM/DD/YYYY):");
-            System.out.println("Entered Date: " + selectedDate);
-
-            boolean activityFound = false;
-
-            textArea.setText(""); // Clear the text area
-            ArrayList<Activity> act = new ArrayList();
-            for (Activity activity : listOfActivities) {
-                if (activity.getDate().equals(selectedDate)) {
-                    activityFound = true;
-                    textArea.append("Activity Type: " + activity.getType_of_activity() + "\n");
-                    textArea.append("Date: " + activity.getDate() + "\n");
-                    textArea.append("Distance: " + activity.getDistance_km() + " km\n");
-                    textArea.append("Intensity: " + activity.getIntensity() + "\n");
-                    textArea.append("Calories Burnt: " + activity.getCaloriesBurnt() + " cal\n\n");
-                    act.add(activity);
-                }
-            }
-            model.setActivities(act);
-            table.invalidate();
-            table.repaint();
-            if (!activityFound) {
-                textArea.append("No activities found for the given date.\n");
+        filterByDistanceButton.addActionListener(e -> {
+            double minDistance = getMinDistance(); // Display input dialog for minimum distance
+            if (minDistance >= 0) {
+                filterActivitiesByDistance(minDistance);
+                model.setActivities(filteredActivities);
+                table.invalidate();
+                table.repaint();
             }
         });
+
+        filterByDurationButton.addActionListener(e -> {
+            int minDuration = getMinDuration(); // Display input dialog for minimum duration
+            if (minDuration >= 0) {
+                filterActivitiesByDuration(minDuration);
+                model.setActivities(filteredActivities);
+                table.invalidate();
+                table.repaint();
+            }
+        });
+
+        viewActivityButton.addActionListener(e -> {
+            String selectedDate = JOptionPane.showInputDialog("Enter the date (MM/DD/YYYY)");
+
+            if (selectedDate != null && !selectedDate.isEmpty()) {
+                System.out.println("Entered Date: " + selectedDate);
+
+                ArrayList<Activity> act = new ArrayList<>();
+                for (Activity activity : listOfActivities) {
+                    if (activity.getDate().equals(selectedDate)) {
+                        act.add(activity);
+                    }
+                }
+
+                if (!act.isEmpty()) {
+                    model.setActivities(act);
+                    table.invalidate();
+                    table.repaint();
+                } else {
+                    // If no activities found, show a message in the table
+                    model.setActivities(new ArrayList<>()); // Clear the table
+                    table.invalidate();
+                    table.repaint();
+                    textArea.setText("No activities found for the given date.");
+                }
+            }
+        });
+
 
 
 
@@ -205,11 +228,20 @@ public class ActivityTrackerUI {
                 if (result == JOptionPane.OK_OPTION) {
                     String selectedIntensity = (String) intensityComboBox.getSelectedItem();
                     if (selectedIntensity != null) {
-                        searchActivityByIntensity( selectedIntensity, textArea);
+                        ArrayList<Activity> act = new ArrayList<>();
+                        for (Activity activity : listOfActivities) {
+                            if (activity.getIntensity().toString().equals(selectedIntensity)) {
+                                act.add(activity);
+                            }
+                        }
+                        model.setActivities(act);
+                        table.invalidate();
+                        table.repaint();
                     }
                 }
             }
         });
+
 
 
 
@@ -233,7 +265,17 @@ public class ActivityTrackerUI {
 
                 if (result == JOptionPane.OK_OPTION) {
                     String selectedHeartRate = (String) heartRateComboBox.getSelectedItem();
-                    searchActivityByHeartRate( selectedHeartRate, textArea);
+                    if (selectedHeartRate != null) {
+                        ArrayList<Activity> act = new ArrayList<>();
+                        for (Activity activity : listOfActivities) {
+                            if (String.valueOf(activity.getAvg_heart_rate()).equals(selectedHeartRate)) {
+                                act.add(activity);
+                            }
+                        }
+                        model.setActivities(act);
+                        table.invalidate();
+                        table.repaint();
+                    }
                 }
             }
         });
@@ -272,38 +314,127 @@ public class ActivityTrackerUI {
              model.setActivities(listOfActivities);
              table.invalidate();
              table.repaint();
-             displayActivityData(textArea);
+
          }
      });
 }
+    private double getMinDistance() {
+        JTextField minDistanceField = new JTextField();
 
+        JPanel dialogPanel = new JPanel();
+        dialogPanel.setLayout(new GridLayout(1, 2));
+        dialogPanel.add(new JLabel("Minimum Distance (km):"));
+        dialogPanel.add(minDistanceField);
 
+        int result = JOptionPane.showConfirmDialog(
+                null,
+                dialogPanel,
+                "Enter Minimum Distance",
+                JOptionPane.OK_CANCEL_OPTION
+        );
 
-    private void displayActivityData(JTextArea textArea) {
-        textArea.setText(""); // Clear the text area
-
-        // Create headers
-        String header = String.format("%-20s | %-20s | %-20s | %-20s | %-20s | %-20s%n",
-                "Type", "Date", "Duration (min)", "Distance (km)", "Average BPM", "Calories Burned");
-        String separator = "-".repeat(header.length()) + "\n";
-
-        textArea.append(separator);
-        textArea.append(header);
-        textArea.append(separator);
-
-        // Display activities
-        for (Activity activity : listOfActivities) {
-            textArea.append(String.format("%-20s | %-20s | %-20s | %-20s | %-20s | %-20s%n",
-                    activity.getType_of_activity(),
-                    activity.getDate(),
-                    activity.getDuration_min(),
-                    activity.getDistance_km(),
-                    activity.getAvg_heart_rate(),
-                    activity.getCaloriesBurnt()));
+        if (result == JOptionPane.OK_OPTION) {
+            try {
+                double minDistance = Double.parseDouble(minDistanceField.getText());
+                return minDistance;
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Invalid input. Please enter a valid number.");
+            }
         }
 
-        textArea.append(separator);
+        return -1; // Return a negative value to indicate invalid input
     }
+
+    private int getMinDuration() {
+        JTextField minDurationField = new JTextField();
+
+        JPanel dialogPanel = new JPanel();
+        dialogPanel.setLayout(new GridLayout(1, 2));
+        dialogPanel.add(new JLabel("Minimum Duration (min):"));
+        dialogPanel.add(minDurationField);
+
+        int result = JOptionPane.showConfirmDialog(
+                null,
+                dialogPanel,
+                "Enter Minimum Duration",
+                JOptionPane.OK_CANCEL_OPTION
+        );
+
+        if (result == JOptionPane.OK_OPTION) {
+            try {
+                int minDuration = Integer.parseInt(minDurationField.getText());
+                return minDuration;
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Invalid input. Please enter a valid number.");
+            }
+        }
+
+        return -1; // Return a negative value to indicate invalid input
+    }
+
+
+
+    private void filterActivitiesByDistance(double minDistance) {
+        filteredActivities.clear();
+
+        for (Activity activity : listOfActivities) {
+            double distance = activity.getDistance_km();
+            if (distance >= minDistance) {
+                filteredActivities.add(activity);
+            }
+        }
+    }
+
+    private void filterActivitiesByDuration(int minDuration) {
+        filteredActivities.clear();
+
+        for (Activity activity : listOfActivities) {
+            int duration = (int) activity.getDuration_min();
+            if (duration >= minDuration) {
+                filteredActivities.add(activity);
+            }
+        }
+    }
+
+
+    private void displayActivityDetails(Activity activity, JTextArea textArea) {
+        textArea.append("Type: " + activity.getType_of_activity() + "\n");
+        textArea.append("Date: " + activity.getDate() + "\n");
+        textArea.append("Duration (min): " + activity.getDuration_min() + "\n");
+        textArea.append("Distance (km): " + activity.getDistance_km() + "\n");
+        textArea.append("Average BPM: " + activity.getAvg_heart_rate() + " bpm\n");
+        textArea.append("Calories Burned: " + activity.getCaloriesBurnt() + " cal\n\n");
+    }
+
+
+
+
+
+//private void displayActivityData(JTextArea textArea) {
+//        textArea.setText(""); // Clear the text area
+//
+//        // Create headers
+//        String header = String.format("%-20s | %-20s | %-20s | %-20s | %-20s | %-20s%n",
+//                "Type", "Date", "Duration (min)", "Distance (km)", "Average BPM", "Calories Burned");
+//        String separator = "-".repeat(header.length()) + "\n";
+//
+//        textArea.append(separator);
+//        textArea.append(header);
+//        textArea.append(separator);
+//
+//        // Display activities
+//        for (Activity activity : listOfActivities) {
+//            textArea.append(String.format("%-20s | %-20s | %-20s | %-20s | %-20s | %-20s%n",
+//                    activity.getType_of_activity(),
+//                    activity.getDate(),
+//                    activity.getDuration_min(),
+//                    activity.getDistance_km(),
+//                    activity.getAvg_heart_rate(),
+//                    activity.getCaloriesBurnt()));
+//        }
+//
+//        textArea.append(separator);
+//    }
 
     private List<String> getUniqueIntensities() {
         List<String> intensities = new ArrayList<>();
@@ -378,22 +509,14 @@ public class ActivityTrackerUI {
 
 
 
-    private void searchActivityByIntensity(String selectedIntensity, JTextArea textArea) {
-        textArea.setText(""); // Clear the text area
-
-        textArea.append("Activities with Intensity: " + selectedIntensity + ":\n");
-
+    private void searchActivityByIntensity(String selectedIntensity) {
+        ArrayList<Activity> act = new ArrayList<>();
         for (Activity activity : listOfActivities) {
             if (activity.getIntensity().toString().equals(selectedIntensity)) {
-                // Display activity details
-                textArea.append("Type: " + activity.getType_of_activity() + "\n");
-                textArea.append("Date: " + activity.getDate() + "\n");
-                textArea.append("Duration (min): " + activity.getDuration_min() + "\n");
-                textArea.append("Distance (km): " + activity.getDistance_km() + "\n");
-                textArea.append("Average BPM: " + activity.getAvg_heart_rate() + " bpm\n");
-                textArea.append("Calories Burned: " + activity.getCaloriesBurnt() + " cal\n\n");
+                act.add(activity);
             }
         }
+
     }
 
 
@@ -401,23 +524,15 @@ public class ActivityTrackerUI {
 
 
 
-    private void searchActivityByHeartRate(String heartRate, JTextArea textArea) {
-        textArea.setText(""); // Clear the text area
 
-        textArea.append("Activities with Heart Rate (bpm): " + heartRate + ":\n");
-
+    private void searchActivityByHeartRate(String heartRate) {
+        ArrayList<Activity> act = new ArrayList<>();
         // Convert the user-selected heart rate to a double for numeric comparison
         double selectedHeartRate = Double.parseDouble(heartRate);
 
         for (Activity activity : listOfActivities) {
             if (activity.getAvg_heart_rate() == selectedHeartRate) {
-                // Display activity details
-                textArea.append("Type: " + activity.getType_of_activity() + "\n");
-                textArea.append("Date: " + activity.getDate() + "\n");
-                textArea.append("Duration (min): " + activity.getDuration_min() + "\n");
-                textArea.append("Distance (km): " + activity.getDistance_km() + "\n");
-                textArea.append("Average BPM: " + activity.getAvg_heart_rate() + " bpm\n");
-                textArea.append("Calories Burned: " + activity.getCaloriesBurnt() + " cal\n\n");
+                act.add(activity);
             }
         }
     }
@@ -427,7 +542,7 @@ public class ActivityTrackerUI {
 
 
 
-    public static void main(String[] args) {
+        public static void main(String[] args) {
         ArrayList<Activity> activities = new ArrayList<>();
         String fileSource = "src/main/java/CSV/activity_data_10.csv";
 
