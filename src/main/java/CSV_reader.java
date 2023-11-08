@@ -42,6 +42,9 @@ public class CSV_reader {
 
 
 
+
+
+
     private static Activity splitLine(String singleLine, String lineTesting) {
         String typeofActivity;
         String date;

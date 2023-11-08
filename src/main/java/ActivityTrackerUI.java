@@ -92,11 +92,15 @@ public class ActivityTrackerUI {
             }
         }
 
+        JButton addNewFileButton = createStyledButton("Add New File");
 
         JButton avgDistanceButton = createStyledButton("Calculate Average Distance");
         JButton avgCaloriesButton = createStyledButton("Calculate Average Calories Burnt");
         JButton viewActivityButton = createStyledButton("View Activity Details by date");
 //        JButton getActivityDetailsButton = createStyledButton("Search Activity By Date");
+
+
+
         JButton searchByIntensityButton = createStyledButton("Search by Intensity");
         JButton searchByHeartRateButton = createStyledButton("Search by Heart Rate");
         JButton filterByDistanceButton  = createStyledButton("Filter by Distance");
@@ -121,6 +125,7 @@ public class ActivityTrackerUI {
         sortByPanel.add(sortOptionsPanel, BorderLayout.CENTER);
         sortByPanel.add(sortByButton, BorderLayout.EAST);
 
+        buttonPanel.add(addNewFileButton);
         buttonPanel.add(activityTypeComboBox);
         buttonPanel.add(avgDistanceButton);
         buttonPanel.add(avgCaloriesButton);
@@ -456,7 +461,6 @@ public class ActivityTrackerUI {
                 uniqueHeartRates.add(avgHeartRate);
             }
         }
-
         return uniqueHeartRates;
     }
 
