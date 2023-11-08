@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.table.TableModel;
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -286,7 +287,29 @@ public class ActivityTrackerUI {
         });
 
 
+        addNewFileButton.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            int result = fileChooser.showOpenDialog(null);
 
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                String newFileSource = selectedFile.getAbsolutePath();
+
+                try {
+                    ArrayList<Activity> newActivities = new ArrayList<>();
+                    newActivities = CSV_reader.fileReader(newFileSource, newActivities);
+                    listOfActivities.clear();
+                    listOfActivities.addAll(newActivities);
+
+                    // Update the table to display the new data
+                    model.setActivities(listOfActivities);
+                    table.invalidate();
+                    table.repaint();
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, "Error reading the selected file: " + ex.getMessage());
+                }
+            }
+        });
 
 //        getActivityDetailsButton.addActionListener(e -> {
 //            String selectedActivityType = (String) activityTypeComboBox.getSelectedItem();
