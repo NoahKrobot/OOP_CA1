@@ -28,7 +28,7 @@ public class ActivityTrackerUI {
     private JButton createStyledButton(String text) {
         JButton button = new JButton(text);
         button.setPreferredSize(new Dimension(250, 60));
-        button.setBackground(new Color(108, 122, 137)); // Modern blue color
+        button.setBackground(Color.WHITE); // Modern blue color
         button.setForeground(Color.BLACK);
         button.setFont(new Font("Arial", Font.BOLD, 16));
         return button;
@@ -41,7 +41,7 @@ public class ActivityTrackerUI {
         headerLabel.setFont(new Font("Arial", Font.BOLD, 24));
         headerLabel.setHorizontalAlignment(JLabel.CENTER);
         headerLabel.setForeground(Color.WHITE);
-        headerLabel.setBackground(new Color(108, 122, 137)); // Dark background color
+        headerLabel.setBackground(Color.WHITE); // Dark background color
         headerLabel.setOpaque(true);
         mainPanel.add(headerLabel, BorderLayout.NORTH);
 
@@ -146,25 +146,29 @@ public class ActivityTrackerUI {
 
 
         viewActivityButton.addActionListener(e -> {
-            String selectedActivityType = (String) activityTypeComboBox.getSelectedItem();
-            if (selectedActivityType != null) {
-                String selectedDate = JOptionPane.showInputDialog("Enter the date (MM/DD/YYYY):");
-                System.out.println("Entered Date: " + selectedDate);
+            String selectedDate = JOptionPane.showInputDialog("Enter the date (MM/DD/YYYY):");
+            System.out.println("Entered Date: " + selectedDate);
 
-                Activity selectedActivity = findActivityByDate(selectedDate, selectedActivityType);
-                System.out.println("Selected Activity: " + selectedActivity);
+            boolean activityFound = false;
 
-                if (selectedActivity != null) {
-                    textArea.append("\nActivity Type: " + selectedActivity.getType_of_activity());
-                    textArea.append("\nDate: " + selectedActivity.getDate());
-                    textArea.append("\nDistance: " + selectedActivity.getDistance_km() + " km");
-                    textArea.append("\nIntensity: " + selectedActivity.getIntensity());
-                    textArea.append("\nCalories Burnt: " + selectedActivity.getCaloriesBurnt() + " cal");
-                } else {
-                    textArea.append("\nActivity not found for the given date and type.");
+            textArea.setText(""); // Clear the text area
+
+            for (Activity activity : listOfActivities) {
+                if (activity.getDate().equals(selectedDate)) {
+                    activityFound = true;
+                    textArea.append("Activity Type: " + activity.getType_of_activity() + "\n");
+                    textArea.append("Date: " + activity.getDate() + "\n");
+                    textArea.append("Distance: " + activity.getDistance_km() + " km\n");
+                    textArea.append("Intensity: " + activity.getIntensity() + "\n");
+                    textArea.append("Calories Burnt: " + activity.getCaloriesBurnt() + " cal\n\n");
                 }
             }
+
+            if (!activityFound) {
+                textArea.append("No activities found for the given date.\n");
+            }
         });
+
 
 
         // Search by intensity button listener
