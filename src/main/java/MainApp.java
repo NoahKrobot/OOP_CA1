@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.*;
 import javax.swing.*;
 import java.awt.*;
@@ -13,8 +14,12 @@ public class MainApp {
         ArrayList<Activity> listOfActivities = new ArrayList<Activity>();
         String fileSource = "src/main/java/CSV/activity_data_10.csv";
 
+
+
         CSV_reader.fileReader(fileSource, listOfActivities);
 
+        String fileSource2 = "src/main/java/CSV/activity_data_50.csv";
+        addNewFile(fileSource2, listOfActivities);
 
         CompareActivities.naturalOrder(listOfActivities);
 
@@ -27,6 +32,11 @@ public class MainApp {
                 new ActivityTrackerUI(listOfActivities);
             }
         });
+    }
+
+
+    public static void addNewFile(String fileSource, ArrayList<Activity>listOfActivities) throws IOException {
+        CSV_reader.fileReader(fileSource,  listOfActivities);
     }
 
 
