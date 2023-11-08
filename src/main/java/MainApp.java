@@ -12,14 +12,14 @@ public class MainApp {
 
 
         ArrayList<Activity> listOfActivities = new ArrayList<Activity>();
-        String fileSource = "src/main/java/CSV/activity_data_10.csv";
+        String fileSource = "src/main/java/CSV/activity_data_1000.csv";
 
 
 
         CSV_reader.fileReader(fileSource, listOfActivities);
 
-        String fileSource2 = "src/main/java/CSV/activity_data_50.csv";
-        addNewFile(fileSource2, listOfActivities);
+//        String fileSource2 = "src/main/java/CSV/activity_data_50.csv";
+//        addNewFile(fileSource2, listOfActivities);
 
         CompareActivities.naturalOrder(listOfActivities);
 
