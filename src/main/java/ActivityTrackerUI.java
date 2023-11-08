@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ public class ActivityTrackerUI {
     private final ArrayList<Activity> listOfActivities;
     private JComboBox<String> sortOptions;
     private JComboBox<String> heartRateComboBox;
-
+     private MyTableModel model;
     private String fileSource;
     public ActivityTrackerUI(ArrayList<Activity> listOfActivities) {
         this.listOfActivities = listOfActivities;
@@ -53,8 +54,17 @@ public class ActivityTrackerUI {
         textArea.setFont(new Font("Arial", Font.PLAIN, 16));
         textArea.setBackground(new Color(44, 62, 80));
         textArea.setForeground(Color.WHITE);
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        centerPanel.add(scrollPane, BorderLayout.CENTER);
+        JPanel p2 = new JPanel();
+
+        JTable table=new JTable();
+        model = new MyTableModel(listOfActivities);
+        table.setModel(model);
+        JScrollPane scrollPane = new JScrollPane(table);
+        p2.add(scrollPane, BorderLayout.NORTH);
+       // JScrollPane scrollPane = new JScrollPane(textArea);
+        JScrollPane scrollPane2 = new JScrollPane(textArea);
+        p2.add(scrollPane2, BorderLayout.NORTH);
+        centerPanel.add(p2, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel(new GridLayout(0, 2, 10, 10)); // GridLayout with 2 columns
 
@@ -112,6 +122,7 @@ public class ActivityTrackerUI {
         buttonPanel.add(activityTypeComboBox);
         buttonPanel.add(avgDistanceButton);
         buttonPanel.add(avgCaloriesButton);
+
         buttonPanel.add(viewActivityButton);
 //        buttonPanel.add(getActivityDetailsButton);
         buttonPanel.add(sortByPanel);
@@ -152,7 +163,7 @@ public class ActivityTrackerUI {
             boolean activityFound = false;
 
             textArea.setText(""); // Clear the text area
-
+            ArrayList<Activity> act = new ArrayList();
             for (Activity activity : listOfActivities) {
                 if (activity.getDate().equals(selectedDate)) {
                     activityFound = true;
@@ -161,9 +172,12 @@ public class ActivityTrackerUI {
                     textArea.append("Distance: " + activity.getDistance_km() + " km\n");
                     textArea.append("Intensity: " + activity.getIntensity() + "\n");
                     textArea.append("Calories Burnt: " + activity.getCaloriesBurnt() + " cal\n\n");
+                    act.add(activity);
                 }
             }
-
+            model.setActivities(act);
+            table.invalidate();
+            table.repaint();
             if (!activityFound) {
                 textArea.append("No activities found for the given date.\n");
             }
@@ -255,6 +269,9 @@ public class ActivityTrackerUI {
                  case "Distance (Ascending)" -> listOfActivities.sort(new CompareDistances());
                  case "Distance (Descending)" -> listOfActivities.sort(new CompareDistanceReversed());
              }
+             model.setActivities(listOfActivities);
+             table.invalidate();
+             table.repaint();
              displayActivityData(textArea);
          }
      });

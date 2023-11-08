@@ -71,7 +71,7 @@ public class Activity extends AbstractActivity implements Comparable<Activity>{
 
     public void setIntensity()
     {
-        double kmPerHour= (getDuration_min()/60)*getDistance_km();
+        double kmPerHour= getDistance_km()/(getDuration_min()/60);
         if(Objects.equals(getType_of_activity(), "Swimming")){
             if(kmPerHour<=0.5){
                 Intensity = Activity.INTENSITY.VERY_LIGHT;
