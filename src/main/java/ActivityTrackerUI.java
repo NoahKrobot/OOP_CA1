@@ -85,7 +85,7 @@ public class ActivityTrackerUI {
         JButton avgDistanceButton = createStyledButton("Calculate Average Distance");
         JButton avgCaloriesButton = createStyledButton("Calculate Average Calories Burnt");
         JButton viewActivityButton = createStyledButton("View Activity Details");
-        JButton getActivityDetailsButton = createStyledButton("Search Activity By Date");
+//        JButton getActivityDetailsButton = createStyledButton("Search Activity By Date");
         JButton searchByIntensityButton = createStyledButton("Search by Intensity");
         JButton searchByHeartRateButton = createStyledButton("Search by Heart Rate");
 
@@ -113,7 +113,7 @@ public class ActivityTrackerUI {
         buttonPanel.add(avgDistanceButton);
         buttonPanel.add(avgCaloriesButton);
         buttonPanel.add(viewActivityButton);
-        buttonPanel.add(getActivityDetailsButton);
+//        buttonPanel.add(getActivityDetailsButton);
         buttonPanel.add(sortByPanel);
         buttonPanel.add(searchByIntensityButton);
         buttonPanel.add(searchByHeartRateButton);
@@ -223,19 +223,19 @@ public class ActivityTrackerUI {
 
 
 
-        getActivityDetailsButton.addActionListener(e -> {
-            String selectedActivityType = (String) activityTypeComboBox.getSelectedItem();
-            if (selectedActivityType != null) {
-                String selectedDate = JOptionPane.showInputDialog("Enter the date (MM/DD/YYYY):");
-                Activity selectedActivity = findActivityByDate(selectedDate, selectedActivityType);
-                if (selectedActivity != null) {
-                    String details = "Intensity: " + selectedActivity.getIntensity() + ", Calories Burnt: " + selectedActivity.getCaloriesBurnt() + " cal";
-                    textArea.append("\n" + details);
-                } else {
-                    textArea.append("\nActivity not found for the given date and type.");
-                }
-            }
-        });
+//        getActivityDetailsButton.addActionListener(e -> {
+//            String selectedActivityType = (String) activityTypeComboBox.getSelectedItem();
+//            if (selectedActivityType != null) {
+//                String selectedDate = JOptionPane.showInputDialog("Enter the date (MM/DD/YYYY):");
+//                Activity selectedActivity = findActivityByDate(selectedDate, selectedActivityType);
+//                if (selectedActivity != null) {
+//                    String details = "Intensity: " + selectedActivity.getIntensity() + ", Calories Burnt: " + selectedActivity.getCaloriesBurnt() + " cal";
+//                    textArea.append("\n" + details);
+//                } else {
+//                    textArea.append("\nActivity not found for the given date and type.");
+//                }
+//            }
+//        });
 
 
      sortByButton.addActionListener(e  -> {
