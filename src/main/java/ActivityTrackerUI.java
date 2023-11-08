@@ -548,7 +548,7 @@ public class ActivityTrackerUI {
 
         public static void main(String[] args) {
         ArrayList<Activity> activities = new ArrayList<>();
-        String fileSource = "src/main/java/CSV/activity_data_10.csv";
+        String fileSource = "src/main/java/CSV/activity_data_10.csv";//
 
         try {
             activities = CSV_reader.fileReader(fileSource, activities);
