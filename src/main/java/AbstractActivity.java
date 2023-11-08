@@ -2,15 +2,15 @@ import java.util.Objects;
 
 public abstract class AbstractActivity {
 
-    private String type_of_activity;
-    private String date; //MM/DD/YYYY
-    private double duration_min;
-    private double distance_km;
-    private double avg_heart_rate;
+    public String type_of_activity;
+    public String date; //MM/DD/YYYY
+    public double duration_min;
+    public double distance_km;
+    public double avg_heart_rate;
 
 
     public static enum INTENSITY{VERY_LIGHT, LIGHT, MODERATE, VIGOROUS, VERY_VIGOROUS}
-    private Activity.INTENSITY Intensity;
+    public Activity.INTENSITY Intensity;
 
     public AbstractActivity(String type_of_activity, String date, double duration_min, double distance_km, double avg_heart_rate) {
         this.type_of_activity = type_of_activity;

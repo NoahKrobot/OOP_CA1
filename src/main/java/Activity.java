@@ -159,12 +159,18 @@ public class Activity extends AbstractActivity implements Comparable<Activity>{
     }
 
     @Override
-    public String toString() {
 
-        return super.toString() +"  Activity{" +
-                "Calories Burnt =" +getCaloriesBurnt() +
-                "} " ;
-    }
+    public String toString() {
+        return " " +
+                "Type of Activity = '" + type_of_activity + '\'' +
+                ", Date = '" + date + '\'' +
+                ", Duration (min) = " + duration_min +
+                ", Distance (km) = " + distance_km +
+                ", Avg Heart Rate = " + avg_heart_rate;
+
+
+
+}
 }
 
 

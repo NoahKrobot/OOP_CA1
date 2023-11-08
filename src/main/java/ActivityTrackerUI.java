@@ -1,14 +1,21 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.List;
+
 
 public class ActivityTrackerUI {
     private final JFrame frame;
     private final ArrayList<Activity> listOfActivities;
     private JComboBox<String> sortOptions;
+    private JComboBox<String> heartRateComboBox;
+
+    private String fileSource;
     public ActivityTrackerUI(ArrayList<Activity> listOfActivities) {
         this.listOfActivities = listOfActivities;
+        this.fileSource = fileSource;
         frame = new JFrame("Activity Tracker");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
@@ -79,6 +86,16 @@ public class ActivityTrackerUI {
         JButton avgCaloriesButton = createStyledButton("Calculate Average Calories Burnt");
         JButton viewActivityButton = createStyledButton("View Activity Details");
         JButton getActivityDetailsButton = createStyledButton("Search Activity By Date");
+        JButton searchByIntensityButton = createStyledButton("Search by Intensity");
+        JButton searchByHeartRateButton = createStyledButton("Search by Heart Rate");
+
+
+
+
+
+
+
+
 
         JPanel sortByPanel = new JPanel(new BorderLayout());
 
@@ -98,6 +115,8 @@ public class ActivityTrackerUI {
         buttonPanel.add(viewActivityButton);
         buttonPanel.add(getActivityDetailsButton);
         buttonPanel.add(sortByPanel);
+        buttonPanel.add(searchByIntensityButton);
+        buttonPanel.add(searchByHeartRateButton);
 
         centerPanel.add(buttonPanel, BorderLayout.EAST);
 
@@ -148,6 +167,49 @@ public class ActivityTrackerUI {
         });
 
 
+        searchByIntensityButton.addActionListener(e -> {
+            List<String> uniqueIntensities = getUniqueIntensities();
+
+            if (uniqueIntensities.isEmpty()) {
+                JOptionPane.showMessageDialog(frame, "No unique intensities found.");
+            } else {
+                String selectedIntensity = (String) JOptionPane.showInputDialog(frame,
+                        "Select an intensity:", "Intensity Selection", JOptionPane.QUESTION_MESSAGE,
+                        null, uniqueIntensities.toArray(), uniqueIntensities.get(0));
+
+                if (selectedIntensity != null) {
+                    searchActivityByIntensity(selectedIntensity, textArea);
+                }
+            }
+        });
+
+
+        // Search by heart rate button listener
+        searchByHeartRateButton.addActionListener(e -> {
+            String selectedActivityType = (String) activityTypeComboBox.getSelectedItem();
+            if (selectedActivityType != null) {
+                JComboBox<String> heartRateComboBox = new JComboBox<>();
+                List<String> uniqueHeartRates = getUniqueHeartRates(listOfActivities);
+
+                for (String heartRate : uniqueHeartRates) {
+                    heartRateComboBox.addItem(heartRate);
+                }
+
+                JPanel dialogPanel = new JPanel();
+                dialogPanel.add(new JLabel("Select Heart Rate:"));
+                dialogPanel.add(heartRateComboBox);
+
+                int result = JOptionPane.showConfirmDialog(null, dialogPanel, "Search by Heart Rate", JOptionPane.OK_CANCEL_OPTION);
+
+                if (result == JOptionPane.OK_OPTION) {
+                    String selectedHeartRate = (String) heartRateComboBox.getSelectedItem();
+                    searchActivityByHeartRate( selectedHeartRate, textArea);
+                }
+            }
+        });
+
+
+
 
         getActivityDetailsButton.addActionListener(e -> {
             String selectedActivityType = (String) activityTypeComboBox.getSelectedItem();
@@ -164,7 +226,7 @@ public class ActivityTrackerUI {
         });
 
 
-     sortByButton.addActionListener(e -> {
+     sortByButton.addActionListener(e  -> {
          String selectedSortOption = (String) sortOptions.getSelectedItem();
          if (selectedSortOption != null) {
              switch (selectedSortOption) {
@@ -182,12 +244,59 @@ public class ActivityTrackerUI {
      });
 }
 
+
+
     private void displayActivityData(JTextArea textArea) {
         textArea.setText(""); // Clear the text area
+
+        // Create headers
+        String header = String.format("%-20s | %-20s | %-20s | %-20s | %-20s | %-20s%n",
+                "Type", "Date", "Duration (min)", "Distance (km)", "Average BPM", "Calories Burned");
+        String separator = "-".repeat(header.length()) + "\n";
+
+        textArea.append(separator);
+        textArea.append(header);
+        textArea.append(separator);
+
+        // Display activities
         for (Activity activity : listOfActivities) {
-            textArea.append(activity.toString() + "\n");
+            textArea.append(String.format("%-20s | %-20s | %-20s | %-20s | %-20s | %-20s%n",
+                    activity.getType_of_activity(),
+                    activity.getDate(),
+                    activity.getDuration_min(),
+                    activity.getDistance_km(),
+                    activity.getAvg_heart_rate(),
+                    activity.getCaloriesBurnt()));
         }
+
+        textArea.append(separator);
     }
+
+    private List<String> getUniqueIntensities() {
+        List<String> intensities = new ArrayList<>();
+
+        for (Activity.INTENSITY intensity : Activity.INTENSITY.values()) {
+            intensities.add(intensity.toString());
+        }
+
+        return intensities;
+    }
+
+
+    private List<String> getUniqueHeartRates(ArrayList<Activity> activities) {
+        List<String> uniqueHeartRates = new ArrayList<>();
+
+        for (Activity activity : activities) {
+            String avgHeartRate = String.valueOf(activity.getAvg_heart_rate());
+            if (!uniqueHeartRates.contains(avgHeartRate)) {
+                uniqueHeartRates.add(avgHeartRate);
+            }
+        }
+
+        return uniqueHeartRates;
+    }
+
+
     private boolean containsItem(JComboBox<String> comboBox, String item) {
         for (int i = 0; i < comboBox.getItemCount(); i++) {
             if (comboBox.getItemAt(i).equals(item)) {
@@ -232,21 +341,69 @@ public class ActivityTrackerUI {
         }
         return null; // Activity not found
     }
+
+
+
+
+    private void searchActivityByIntensity(String intensity, JTextArea textArea) {
+        textArea.setText(""); // Clear the text area
+
+        textArea.append("Activities with Intensity: " + intensity + ":\n");
+
+        for (Activity activity : listOfActivities) {
+            System.out.println("Comparing: " + activity.getIntensity() + " to " + intensity); // Debug line
+            if (Objects.equals(activity.getIntensity(), intensity)) {
+                textArea.append("Type: " + activity.getType_of_activity() + "\n");
+                textArea.append("Date: " + activity.getDate() + "\n");
+                textArea.append("Duration (min): " + activity.getDuration_min() + "\n");
+                textArea.append("Distance (km): " + activity.getDistance_km() + "\n");
+                textArea.append("Average BPM: " + activity.getAvg_heart_rate() + "\n");
+                textArea.append("Calories Burned: " + activity.getCaloriesBurnt() + " cal\n\n");
+            }
+        }
+    }
+
+
+
+
+ private void searchActivityByHeartRate(String heartRate, JTextArea textArea) {
+        textArea.setText(""); // Clear the text area
+
+        textArea.append("Activities with Heart Rate (bpm): " + heartRate + ":\n");
+
+        // Convert the user-selected heart rate to a double for numeric comparison
+        double selectedHeartRate = Double.parseDouble(heartRate);
+
+        for (Activity activity : listOfActivities) {
+            if (activity.getAvg_heart_rate() == selectedHeartRate) {
+                // Display activity details
+                textArea.append("Type: " + activity.getType_of_activity() + "\n");
+                textArea.append("Date: " + activity.getDate() + "\n");
+                textArea.append("Duration (min): " + activity.getDuration_min() + "\n");
+                textArea.append("Distance (km): " + activity.getDistance_km() + "\n");
+                textArea.append("Average BPM: " + activity.getAvg_heart_rate() + " bpm\n");
+                textArea.append("Calories Burned: " + activity.getCaloriesBurnt() + " cal\n\n");
+            }
+        }
+    }
+
+
+
+
+
+
     public static void main(String[] args) {
-
-        // Example data for testing
         ArrayList<Activity> activities = new ArrayList<>();
-//        activities.add(new Activity("Running", "04/01/2020", 67, 8.80, 152));
-//        activities.add(new Activity("Swimming", "05/01/2020", 92, 4.01, 145));
-//        activities.add(new Activity("Cycling", "10/01/2020", 107, 27.45, 106));
-//        activities.add(new Activity("Swimming", "06/01/2020", 57, 1.63, 104));
-//        activities.add(new Activity("Swimming", "07/01/2020", 120, 7.37, 148));
-//        activities.add(new Activity("Running", "03/01/2020", 101, 14.10, 151));
-//        activities.add(new Activity("Cycling", "02/01/2020", 33, 6.06, 107));
-//        activities.add(new Activity("Cycling", "11/01/2020", 71, 17.16, 143));
-//        activities.add(new Activity("Swimming", "08/01/2020", 103, 6.00, 95));
-//        activities.add(new Activity("Cycling", "07/01/2020", 98, 25.34, 112));
+        String fileSource = "src/main/java/CSV/activity_data_10.csv";
 
-        SwingUtilities.invokeLater(() -> new ActivityTrackerUI(activities));
+        try {
+            activities = CSV_reader.fileReader(fileSource, activities);
+        } catch (IOException e) {
+            System.err.println("Error reading the CSV file: " + e.getMessage());
+
+        }
+
+        ArrayList<Activity> finalActivities = activities;
+        SwingUtilities.invokeLater(() -> new ActivityTrackerUI(finalActivities));
     }
 }
